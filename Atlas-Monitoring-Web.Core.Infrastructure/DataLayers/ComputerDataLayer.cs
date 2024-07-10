@@ -53,7 +53,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
                 ComputerReadViewModel computer = await response.Content.ReadFromJsonAsync<ComputerReadViewModel>();
                 return computer;
             }
-            if (response.StatusCode == HttpStatusCode.NoContent)
+            else if (response.StatusCode == HttpStatusCode.NoContent)
             {
                 throw new CustomDataLayerException($"No computer found with id '{idComputer.ToString()}'");
             }

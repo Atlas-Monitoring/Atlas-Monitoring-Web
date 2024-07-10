@@ -1,0 +1,64 @@
+﻿@using Color = System.Drawing.Color
+
+<LineChart @ref="lineChart" Width="800" Class="mb-4" />
+
+@code {
+    private LineChart lineChart = default!;
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartData = default!;
+
+    [Parameter]
+    public List<LineChartDataset> lineChartDatasets { get; set; } = new();
+    [Parameter]
+    public List<string> listOfLabelsX { get; set; } = new();
+    [Parameter]
+    public string XLabel { get; set; } = string.Empty;
+    [Parameter]
+    public string YLabel { get; set; } = string.Empty;
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var labels = listOfLabelsX;
+        var datasets = new List<IChartDataset>();
+
+        var dataset1 = new LineChartDataset
+            {
+                Label = "Windows",
+                Data = new List<double> { 7265791, 5899643, 6317759, 6315641, 5338211, 8496306, 7568556, 8538933, 8274297, 8657298, 7548388, 7764845 },
+                BackgroundColor = "#000000",
+                BorderColor = "#000000",
+                BorderWidth = 2,
+                HoverBorderWidth = 4,
+                PointBackgroundColor = "#000000",
+                PointRadius = 0, // hide points
+                PointHoverRadius = 4,
+            };
+        datasets.AddRange(lineChartDatasets);
+
+
+        chartData = new ChartData { Labels = labels, Datasets = datasets };
+
+        lineChartOptions = new();
+        lineChartOptions.Locale = "en-US";
+        lineChartOptions.Responsive = true;
+        lineChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
+
+        lineChartOptions.Scales.X!.Title = new ChartAxesTitle { Text = XLabel, Display = XLabel != string.Empty };
+        lineChartOptions.Scales.Y!.Title = new ChartAxesTitle { Text = YLabel, Display = YLabel != string.Empty };
+
+        lineChartOptions.Plugins.Title!.Text = Title;
+        lineChartOptions.Plugins.Title.Display = Title != string.Empty;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}

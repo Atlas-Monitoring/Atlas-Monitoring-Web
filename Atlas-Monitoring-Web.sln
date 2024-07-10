@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web", "Atlas-Monitoring-Web\Atlas-Monitoring-Web.csproj", "{4993EA84-1FA7-42B6-8630-05E0816E71A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web", "Atlas-Monitoring-Web\Atlas-Monitoring-Web.csproj", "{4993EA84-1FA7-42B6-8630-05E0816E71A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web.Core.Models", "Atlas-Monitoring-Web.Core.Models\Atlas-Monitoring-Web.Core.Models.csproj", "{0D16D656-902C-49B5-8685-9165F59A67D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web.Core.Models", "Atlas-Monitoring-Web.Core.Models\Atlas-Monitoring-Web.Core.Models.csproj", "{0D16D656-902C-49B5-8685-9165F59A67D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web.Core.Application", "Atlas-Monitoring-Web.Core.Application\Atlas-Monitoring-Web.Core.Application.csproj", "{EF268D4A-6F29-4BC3-B08B-70367498BDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web.Core.Application", "Atlas-Monitoring-Web.Core.Application\Atlas-Monitoring-Web.Core.Application.csproj", "{EF268D4A-6F29-4BC3-B08B-70367498BDA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web.Core.Interfaces", "Atlas-Monitoring-Web.Core.Interfaces\Atlas-Monitoring-Web.Core.Interfaces.csproj", "{2B034161-68F4-4825-A925-8556AFB44F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web.Core.Interfaces", "Atlas-Monitoring-Web.Core.Interfaces\Atlas-Monitoring-Web.Core.Interfaces.csproj", "{2B034161-68F4-4825-A925-8556AFB44F03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web.Core.Infrastructure", "Atlas-Monitoring-Web.Core.Infrastructure\Atlas-Monitoring-Web.Core.Infrastructure.csproj", "{2856F83C-A344-4676-92CF-6D742EBF4C66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web.Core.Infrastructure", "Atlas-Monitoring-Web.Core.Infrastructure\Atlas-Monitoring-Web.Core.Infrastructure.csproj", "{2856F83C-A344-4676-92CF-6D742EBF4C66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring-Web.CustomException", "Atlas-Monitoring-Web.CustomException\Atlas-Monitoring-Web.CustomException.csproj", "{E10B9A20-DE25-49CB-BF8B-555AF2A8E2EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring-Web.CustomException", "Atlas-Monitoring-Web.CustomException\Atlas-Monitoring-Web.CustomException.csproj", "{E10B9A20-DE25-49CB-BF8B-555AF2A8E2EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

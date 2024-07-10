@@ -1,10 +1,12 @@
 ﻿@page "/Computers/{idComuterString}"
+@using Atlas_Monitoring_Web.Components.Partial
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.Internal
 @using Atlas_Monitoring_Web.Core.Models.ViewModels
 @using Atlas_Monitoring_Web.CustomException
 @inject ToastService ToastService
 @inject PreloadService PreloadService
+@inject IComputerDataRepository _computerDataRepository
 @inject IComputerRepository _computerRepository
 @inject IComputerHardDriveRepository _computerHardDriveRepository
 
@@ -100,7 +102,10 @@
             <Icon Name="IconName.Activity" /> Performances
         </TitleTemplate>
         <Content>
-            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
+            @if (computerDataViewModel != null)
+            {
+                <LineChartVisualisation lineChartDatasets="@lineChartDatasets" listOfLabelsX="listOfLabelsX" Title="Computer performance" XLabel="Date" YLabel="Percentage" />
+            }
         </Content>
     </Tab>
     <Tab>
@@ -108,7 +113,7 @@
             <Icon Name="IconName.Activity" /> History
         </TitleTemplate>
         <Content>
-            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
+            <p class="mt-3">No History</p>
         </Content>
     </Tab>
 </Tabs>
@@ -120,6 +125,10 @@
     public string idComuterString { get; set; } = string.Empty;
     private ComputerReadViewModel computerReadViewModel;
     private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
+    private List<ComputerDataViewModel> computerDataViewModel;
+
+    private List<LineChartDataset> lineChartDatasets = new();
+    private List<string> listOfLabelsX = new();
     #endregion
 
     #region Constructor
@@ -167,6 +176,40 @@
     {
         computerReadViewModel = await _computerRepository.GetOneComputer(Guid.Parse(idComuterString));
         computerHardDrivesViewModel = await _computerHardDriveRepository.GetHardDrivesOfAComputer(Guid.Parse(idComuterString));
+        computerDataViewModel = await _computerDataRepository.GetAllComputerDataOfAComputer(Guid.Parse(idComuterString), DateTime.Now.AddDays(-1));
+
+        if (computerDataViewModel.Any())
+        {
+            listOfLabelsX = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => item.DateAdd.ToString("yyyy-MM-ss HH:mm:ss")).ToList();
+
+            //Set LineDataSet for CPU
+            lineChartDatasets.Add(new()
+            {
+                    Label = "CPU",
+                    Data = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(item.ProcessorUtilityPourcent, 2)).ToList(),
+                    BackgroundColor = "#43ACF5",
+                    BorderColor = "#43ACF5",
+                    BorderWidth = 2,
+                    HoverBorderWidth = 4,
+                    PointBackgroundColor = "#43ACF5",
+                    PointRadius = 0, // hide points
+                    PointHoverRadius = 4,
+            });
+
+            //Set LineDataSet for Memory
+            lineChartDatasets.Add(new()
+            {
+                    Label = "RAM",
+                    Data = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(100 * (item.MemoryUsed / 1000000) / computerReadViewModel.MaxRam, 2)).ToList(),
+                    BackgroundColor = "#F9AF25",
+                    BorderColor = "#F9AF25",
+                    BorderWidth = 2,
+                    HoverBorderWidth = 4,
+                    PointBackgroundColor = "#F9AF25",
+                    PointRadius = 0, // hide points
+                    PointHoverRadius = 4,
+            });
+        }
     }
 
     private string GetPourcentDiskFree(double totalSpace, double spaceUsed)

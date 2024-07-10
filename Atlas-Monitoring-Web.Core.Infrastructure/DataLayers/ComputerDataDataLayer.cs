@@ -6,14 +6,14 @@ using System.Net;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
-    public class ComputerHardDriveDataLayer : IComputerHardDriveDataLayer
+    public class ComputerDataDataLayer : IComputerDataDataLayer
     {
         #region Properties
         private readonly string _apiPath = string.Empty;
         #endregion
 
         #region Constructor
-        public ComputerHardDriveDataLayer()
+        public ComputerDataDataLayer()
         {
             _apiPath = "http://localhost:8080/api";
         }
@@ -25,20 +25,20 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read
-        public async Task<List<ComputerHardDriveViewModel>> GetHardDrivesOfAComputer(Guid computerId)
+        public async Task<List<ComputerDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDateDate)
         {
             HttpClient client = new HttpClient();
-            string path = $"{_apiPath}/ComputersHardDrive/{computerId.ToString()}";
+            string path = $"{_apiPath}/ComputersData/GetByComputerIdAndDate?idComputer={computerId.ToString()}&minimumDataDate={minimumDateDate.ToString("yyyy-MM-dd")}";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                List<ComputerHardDriveViewModel> computerHardDrives = await response.Content.ReadFromJsonAsync<List<ComputerHardDriveViewModel>>();
-                return computerHardDrives;
+                List<ComputerDataViewModel> computerData = await response.Content.ReadFromJsonAsync<List<ComputerDataViewModel>>();
+                return computerData;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                throw new CustomDataLayerException($"No computer found with id '{computerId.ToString()}'");
+                return new();
             }
             else
             {
