@@ -1,0 +1,30 @@
+﻿<Sidebar2 Href="/"
+          IconName="IconName.Activity"
+          Title="Atlas"
+          BadgeText="v1.0.0"
+          DataProvider="Sidebar2DataProvider" />
+
+@code {
+    IEnumerable<NavItem>? navItems;
+
+    private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
+    {
+        if (navItems is null)
+            navItems = GetNavItems();
+
+        return await Task.FromResult(request.ApplyTo(navItems));
+    }
+
+    private IEnumerable<NavItem> GetNavItems()
+    {
+        navItems = new List<NavItem>
+        {
+            new NavItem { Id = "1", Href = "/", IconName = IconName.HouseDoorFill, Text = "Home"},
+
+            new NavItem { Id = "2", Text = "Devices" },
+            new NavItem { Id = "3", Href = "/Computers", IconName = IconName.Pc, Text = "Computers", ParentId="2"},
+        };
+
+        return navItems;
+    }
+}

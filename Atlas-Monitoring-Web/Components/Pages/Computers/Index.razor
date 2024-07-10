@@ -1,0 +1,132 @@
+﻿@page "/Computers"
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@inject ToastService ToastService
+@inject PreloadService PreloadService
+@inject NavigationManager NavigationManager
+@inject IComputerRepository _computerRepository
+
+<Grid @ref="grid" TItem="ComputerReadViewModel"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="ComputersDataProvider"
+      AllowFiltering="true"
+      AllowRowClick="true"
+      AllowSorting="true"
+      OnRowDoubleClick="OnRowDoubleClick"
+      Responsive="true">
+
+    <GridColumns>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="Computer Name" PropertyName="Name" SortKeySelector="item => item.Name">
+            @context.Name
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="Ip" PropertyName="Designation" SortKeySelector="item => item.Ip">
+            @context.Ip
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="OS" PropertyName="OS" SortKeySelector="item => item.OS">
+            @context.OS
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="OS Version" PropertyName="OSVersion" SortKeySelector="item => item.OSVersion">
+            @context.OSVersion
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="UserName" PropertyName="UserName" SortKeySelector="item => item.UserName">
+            @context.UserName
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="Serial Number" PropertyName="SerialNumber" SortKeySelector="item => item.SerialNumber">
+            @context.SerialNumber
+        </GridColumn>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText="Last Update" PropertyName="DateUpdated" SortKeySelector="item => item.DateUpdated">
+            @context.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss") @GetMinutesFromDateTime(context.DateUpdated)
+        </GridColumn>
+    </GridColumns>
+</Grid>
+
+@code {
+    #region Properties
+    private List<ComputerReadViewModel> listComputers { get; set; } = new();
+    private Grid<ComputerReadViewModel> grid = default!;
+    #endregion
+
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                await LoadData();
+                await grid.RefreshDataAsync();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = "Warning",
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = "Error",
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task LoadData()
+    {
+        listComputers = await _computerRepository.GetAllComputers();
+    }
+
+    private async Task<GridDataProviderResult<ComputerReadViewModel>> ComputersDataProvider(GridDataProviderRequest<ComputerReadViewModel> request)
+    {
+        return await Task.FromResult(request.ApplyTo(listComputers));
+    }
+
+    private async Task OnRowDoubleClick(GridRowEventArgs<ComputerReadViewModel> args)
+    {
+        NavigationManager.NavigateTo($"/Computers/{args.Item.Id.ToString()}", forceLoad: true);
+    }
+
+    private string GetMinutesFromDateTime(DateTime dateTime)
+    {
+        TimeSpan diffOfDates = DateTime.Now - dateTime;
+
+        if (diffOfDates.Days > 0)
+        {
+            return $"({diffOfDates.Days} Day(s))";
+        }
+        else if (diffOfDates.Hours > 0)
+        {
+            return $"({diffOfDates.Hours} Hour(s))";
+        }
+        else if (diffOfDates.Minutes > 0)
+        {
+            return $"({diffOfDates.Minutes} Minute(s))";
+        }
+        else if (diffOfDates.Seconds > 0)
+        {
+            return $"({diffOfDates.Seconds} Second(s))";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+    #endregion
+}

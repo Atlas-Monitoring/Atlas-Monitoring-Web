@@ -1,0 +1,34 @@
+﻿using Atlas_Monitoring_Web.Core.Interfaces.Application;
+using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
+using Atlas_Monitoring_Web.Core.Models.ViewModels;
+
+namespace Atlas_Monitoring_Web.Core.Application.Repositories
+{
+    public class ComputerRepository : IComputerRepository
+    {
+        #region Properties
+        private readonly IComputerDataLayer _computerDataLayer;
+        #endregion
+
+        #region Constructor
+        public ComputerRepository(IComputerDataLayer computerDataLayer)
+        {
+            _computerDataLayer = computerDataLayer;
+        }
+        #endregion
+
+        #region Public Methods
+        #region Read
+        public async Task<List<ComputerReadViewModel>> GetAllComputers()
+        {
+            return await _computerDataLayer.GetAllComputers();
+        }
+
+        public async Task<ComputerReadViewModel> GetOneComputer(Guid idComputer)
+        {
+            return await _computerDataLayer.GetOneComputer(idComputer);
+        }
+        #endregion
+        #endregion
+    }
+}

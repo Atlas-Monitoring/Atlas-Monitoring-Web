@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Atlas-Monitoring-Web</RootNamespace>
+    <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Bootstrap" Version="3.0.0-preview.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atlas-Monitoring-Web.Core.Application\Atlas-Monitoring-Web.Core.Application.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring-Web.Core.Infrastructure\Atlas-Monitoring-Web.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring-Web.Core.Interfaces\Atlas-Monitoring-Web.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring-Web.Core.Models\Atlas-Monitoring-Web.Core.Models.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring-Web.CustomException\Atlas-Monitoring-Web.CustomException.csproj" />
+  </ItemGroup>
+
+</Project>

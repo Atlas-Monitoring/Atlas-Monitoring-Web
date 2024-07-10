@@ -1,0 +1,177 @@
+﻿@page "/Computers/{idComuterString}"
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.Internal
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@inject ToastService ToastService
+@inject PreloadService PreloadService
+@inject IComputerRepository _computerRepository
+@inject IComputerHardDriveRepository _computerHardDriveRepository
+
+<Tabs EnableFadeEffect="true">
+    <Tab Active="true">
+        <TitleTemplate>
+            <Icon Name="IconName.Pc" /> General
+        </TitleTemplate>
+        <Content>
+            @if (computerReadViewModel != null)
+            {
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Status</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>@computerReadViewModel.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Ip</th>
+                            <td>@computerReadViewModel.Ip</td>
+                        </tr>
+                        <tr>
+                            <th>Domain</th>
+                            <td>@computerReadViewModel.Domain</td>
+                        </tr>
+                        <tr>
+                            <th>Ram installed</th>
+                            <td>@computerReadViewModel.MaxRam</td>
+                        </tr>
+                        <tr>
+                            <th>OS</th>
+                            <td>@computerReadViewModel.OS</td>
+                        </tr>
+                        <tr>
+                            <th>OS Version</th>
+                            <td>@computerReadViewModel.OSVersion</td>
+                        </tr>
+                        <tr>
+                            <th>Last username</th>
+                            <td>@computerReadViewModel.UserName</td>
+                        </tr>
+                        <tr>
+                            <th>Serial Number</th>
+                            <td>@computerReadViewModel.SerialNumber</td>
+                        </tr>
+                        <tr>
+                            <th>Date Add</th>
+                            <td>@computerReadViewModel.DateAdd.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        </tr>
+                        <tr>
+                            <th>Date Update</th>
+                            <td>@computerReadViewModel.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        </Content>
+    </Tab>
+    <Tab>
+        <TitleTemplate>
+            <Icon Name="IconName.DeviceHddFill" /> Hard Drive
+        </TitleTemplate>
+        <Content>
+            @if (computerHardDrivesViewModel != null)
+            {
+                @foreach (ComputerHardDriveViewModel hardDrive in computerHardDrivesViewModel.OrderBy(item => item.Letter))
+                {
+                    <Card Color="CardColor.None" Class="mb-4" Style="width:18rem;">
+                        <CardHeader>@hardDrive.Letter : @(GetPourcentDiskFree(hardDrive.TotalSpace, hardDrive.SpaceUse)) % free</CardHeader>
+                        <CardBody>
+                            <CardText>
+                                <div class="row">
+                                    @((hardDrive.SpaceUse / 1000000000).ToString("0.00")) Go / @((hardDrive.TotalSpace / 1000000000).ToString("0.00")) Go
+                                </div>
+                                <div class="row">
+                                    <Progress Class="mb-3" Height="20" Style="padding: 0">
+                                        <ProgressBar Width="100 - Convert.ToDouble(GetPourcentDiskFree(hardDrive.TotalSpace, hardDrive.SpaceUse))" />
+                                    </Progress>
+                                </div>
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                }
+            }            
+        </Content>
+    </Tab>
+    <Tab>
+        <TitleTemplate>
+            <Icon Name="IconName.Activity" /> Performances
+        </TitleTemplate>
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
+        </Content>
+    </Tab>
+    <Tab>
+        <TitleTemplate>
+            <Icon Name="IconName.Activity" /> History
+        </TitleTemplate>
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
+        </Content>
+    </Tab>
+</Tabs>
+
+
+@code {
+    #region Properties
+    [Parameter]
+    public string idComuterString { get; set; } = string.Empty;
+    private ComputerReadViewModel computerReadViewModel;
+    private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
+    #endregion
+
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                await LoadData();
+                StateHasChanged();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = "Warning",
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = "Error",
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task LoadData()
+    {
+        computerReadViewModel = await _computerRepository.GetOneComputer(Guid.Parse(idComuterString));
+        computerHardDrivesViewModel = await _computerHardDriveRepository.GetHardDrivesOfAComputer(Guid.Parse(idComuterString));
+    }
+
+    private string GetPourcentDiskFree(double totalSpace, double spaceUsed)
+    {
+        return (100 - (100 * spaceUsed / totalSpace)).ToString("0.00");
+    }
+    #endregion
+}
