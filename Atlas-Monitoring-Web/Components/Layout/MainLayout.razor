@@ -1,11 +1,15 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.Extensions.Localization
+@using Atlas_Monitoring_Web.Locales
+@inject IStringLocalizer<Resource> localizer
 
 <div class="page">
     <NavMenu />
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <CultureSelector />
+            <a href="https://www.paulin-buland.fr" target="_blank">@localizer["AboutAuthor"]</a>
         </div>
 
         <article class="content px-4">
@@ -21,4 +25,4 @@
 </div>
 
 <Toasts class="p-3" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
-<Preload LoadingText="Loading..." />
+<Preload LoadingText=@localizer["Loading"] />

@@ -23,25 +23,13 @@
         var labels = listOfLabelsX;
         var datasets = new List<IChartDataset>();
 
-        var dataset1 = new LineChartDataset
-            {
-                Label = "Windows",
-                Data = new List<double> { 7265791, 5899643, 6317759, 6315641, 5338211, 8496306, 7568556, 8538933, 8274297, 8657298, 7548388, 7764845 },
-                BackgroundColor = "#000000",
-                BorderColor = "#000000",
-                BorderWidth = 2,
-                HoverBorderWidth = 4,
-                PointBackgroundColor = "#000000",
-                PointRadius = 0, // hide points
-                PointHoverRadius = 4,
-            };
         datasets.AddRange(lineChartDatasets);
 
 
         chartData = new ChartData { Labels = labels, Datasets = datasets };
 
         lineChartOptions = new();
-        lineChartOptions.Locale = "en-US";
+        lineChartOptions.Locale = Thread.CurrentThread.CurrentCulture.Name;
         lineChartOptions.Responsive = true;
         lineChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
 

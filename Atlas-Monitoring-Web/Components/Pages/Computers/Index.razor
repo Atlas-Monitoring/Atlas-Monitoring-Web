@@ -2,10 +2,13 @@
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.ViewModels
 @using Atlas_Monitoring_Web.CustomException
+@using Microsoft.Extensions.Localization
+@using Atlas_Monitoring_Web.Locales
 @inject ToastService ToastService
 @inject PreloadService PreloadService
 @inject NavigationManager NavigationManager
 @inject IComputerRepository _computerRepository
+@inject IStringLocalizer<Resource> localizer
 
 <Grid @ref="grid" TItem="ComputerReadViewModel"
       Class="table table-hover table-bordered table-striped"
@@ -17,7 +20,7 @@
       Responsive="true">
 
     <GridColumns>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText="Computer Name" PropertyName="Name" SortKeySelector="item => item.Name">
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["ComputerName"] PropertyName="Name" SortKeySelector="item => item.Name">
             @context.Name
         </GridColumn>
         <GridColumn TItem="ComputerReadViewModel" HeaderText="Ip" PropertyName="Designation" SortKeySelector="item => item.Ip">
@@ -26,16 +29,16 @@
         <GridColumn TItem="ComputerReadViewModel" HeaderText="OS" PropertyName="OS" SortKeySelector="item => item.OS">
             @context.OS
         </GridColumn>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText="OS Version" PropertyName="OSVersion" SortKeySelector="item => item.OSVersion">
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["OSVersion"] PropertyName="OSVersion" SortKeySelector="item => item.OSVersion">
             @context.OSVersion
         </GridColumn>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText="UserName" PropertyName="UserName" SortKeySelector="item => item.UserName">
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["UserName"] PropertyName="UserName" SortKeySelector="item => item.UserName">
             @context.UserName
         </GridColumn>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText="Serial Number" PropertyName="SerialNumber" SortKeySelector="item => item.SerialNumber">
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["SerialNumber"] PropertyName="SerialNumber" SortKeySelector="item => item.SerialNumber">
             @context.SerialNumber
         </GridColumn>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText="Last Update" PropertyName="DateUpdated" SortKeySelector="item => item.DateUpdated">
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["LastUpdate"] PropertyName="DateUpdated" SortKeySelector="item => item.DateUpdated">
             @context.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss") @GetMinutesFromDateTime(context.DateUpdated)
         </GridColumn>
     </GridColumns>
@@ -64,7 +67,7 @@
         {
             ToastService.Notify(new()
                 {
-                    Title = "Warning",
+                    Title = @localizer["Warning"],
                     Message = ex.Message,
                     IconName = IconName.ExclamationDiamondFill,
                     Type = ToastType.Warning
@@ -74,7 +77,7 @@
         {
             ToastService.Notify(new()
                 {
-                    Title = "Error",
+                    Title = @localizer["Error"],
                     Message = ex.Message,
                     IconName = IconName.ExclamationDiamondFill,
                     Type = ToastType.Danger
@@ -109,19 +112,19 @@
 
         if (diffOfDates.Days > 0)
         {
-            return $"({diffOfDates.Days} Day(s))";
+            return $"({diffOfDates.Days} {localizer["Day"]})";
         }
         else if (diffOfDates.Hours > 0)
         {
-            return $"({diffOfDates.Hours} Hour(s))";
+            return $"({diffOfDates.Hours} {localizer["Hour"]})";
         }
         else if (diffOfDates.Minutes > 0)
         {
-            return $"({diffOfDates.Minutes} Minute(s))";
+            return $"({diffOfDates.Minutes} {localizer["Minute"]})";
         }
         else if (diffOfDates.Seconds > 0)
         {
-            return $"({diffOfDates.Seconds} Second(s))";
+            return $"({diffOfDates.Seconds} {localizer["Second"]})";
         }
         else
         {
