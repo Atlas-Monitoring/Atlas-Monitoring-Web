@@ -6,6 +6,9 @@ using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddLocalization();
+builder.Services.AddControllers();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -25,6 +28,15 @@ builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 var app = builder.Build();
 
+//Add supported language
+string[] supportedCultures = ["en-US", "fr-FR"];
+RequestLocalizationOptions localisationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localisationOptions);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -37,6 +49,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
