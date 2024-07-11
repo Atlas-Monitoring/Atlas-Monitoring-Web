@@ -184,4 +184,7 @@
   <data name="Percentage" xml:space="preserve">
     <value>Percentage</value>
   </data>
+  <data name="NoData" xml:space="preserve">
+    <value>No data</value>
+  </data>
 </root>
