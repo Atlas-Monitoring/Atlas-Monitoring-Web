@@ -250,6 +250,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à No data since 24 hours.
+        /// </summary>
+        public static string NoDataSince24h {
+            get {
+                return ResourceManager.GetString("NoDataSince24h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à OS Version.
         /// </summary>
         public static string OSVersion {

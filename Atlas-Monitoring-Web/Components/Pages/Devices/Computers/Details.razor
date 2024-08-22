@@ -105,9 +105,13 @@
             <Icon Name="IconName.Activity" /> @localizer["Performances"]
         </TitleTemplate>
         <Content>
-            @if (computerDataViewModel != null)
+            @if (computerDataViewModel != null && computerDataViewModel.Any())
             {
                 <LineChartVisualisation lineChartDatasets="@lineChartDatasets" listOfLabelsX="listOfLabelsX" Title=@localizer["ComputerPerformance"] XLabel=@localizer["Date"] YLabel=@localizer["Percentage"] />
+            }
+            else
+            {
+                <h2>@localizer["NoDataSince24h"]</h2>
             }
         </Content>
     </Tab>
@@ -116,7 +120,24 @@
             <Icon Name="IconName.Activity" /> @localizer["History"]
         </TitleTemplate>
         <Content>
-            <p class="mt-3">@localizer["NoData"]</p>
+            @if (deviceHistoryViewModel != null && deviceHistoryViewModel.Any())
+            {
+                <table>
+                    <tbody>
+                        @foreach (DeviceHistoryViewModel data in deviceHistoryViewModel.OrderByDescending(x => x.DateAdd))
+                        {
+                            <tr>
+                                <td>@data.DateAdd</td>
+                                <td>@data.Message</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h2>@localizer["NoData"]</h2>
+            }
         </Content>
     </Tab>
 </Tabs>
@@ -129,6 +150,7 @@
     private ComputerReadViewModel computerReadViewModel;
     private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
     private List<ComputerDataViewModel> computerDataViewModel;
+    private List<DeviceHistoryViewModel> deviceHistoryViewModel;
 
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();

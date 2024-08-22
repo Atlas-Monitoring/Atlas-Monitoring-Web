@@ -207,4 +207,7 @@
   <data name="NoData" xml:space="preserve">
     <value>Pas de données</value>
   </data>
+  <data name="NoDataSince24h" xml:space="preserve">
+    <value>Pas de données depuis 24 heures</value>
+  </data>
 </root>
