@@ -4,6 +4,7 @@ using Atlas_Monitoring_Web.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
 using Atlas_Monitoring_Web.Core.Models.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,15 +48,10 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    IConfiguration config = new ConfigurationBuilder().Build();
-
-    AppConfig AppConfig = new();
-    AppConfig.URLApi = Environment.GetEnvironmentVariable("URLApi").ToString();
-
-    Log.Information($"API URL = {AppConfig.URLApi}");
-
-    config.Bind("AppConfig", AppConfig);
-    builder.Services.Configure<AppConfig>(config.GetSection("AppConfig"));
+    builder.Services.Configure<AppConfig>(o =>
+    {
+        o.URLApi = Environment.GetEnvironmentVariable("URLApi").ToString();
+    });
 }
 
 var app = builder.Build();
