@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="Internal\" />
     <Folder Include="Database\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

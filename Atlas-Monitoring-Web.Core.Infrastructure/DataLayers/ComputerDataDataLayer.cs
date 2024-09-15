@@ -15,7 +15,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         #region Constructor
         public ComputerDataDataLayer()
         {
-            _apiPath = "http://localhost:8080/api";
+            _apiPath = "http://localhost:5241/api";
         }
         #endregion
 

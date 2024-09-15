@@ -11,6 +11,7 @@
 @inject IComputerDataRepository _computerDataRepository
 @inject IComputerRepository _computerRepository
 @inject IComputerHardDriveRepository _computerHardDriveRepository
+@inject IComputerPartsRepository _computerPartsRepository
 @inject IStringLocalizer<Resource> localizer
 
 <Tabs EnableFadeEffect="true">
@@ -60,6 +61,10 @@
                             <td>@computerReadViewModel.SerialNumber</td>
                         </tr>
                         <tr>
+                            <th>@localizer["ManufacturerModel"]</th>
+                            <td><b>@computerReadViewModel.Manufacturer</b> - @computerReadViewModel.Model</td>
+                        </tr>
+                        <tr>
                             <th>@localizer["DateAdd"]</th>
                             <td>@computerReadViewModel.DateAdd.ToString("dd/MM/yyyy HH:mm:ss")</td>
                         </tr>
@@ -67,6 +72,27 @@
                             <th>@localizer["LastUpdate"]</th>
                             <td>@computerReadViewModel.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss")</td>
                         </tr>
+                    </tbody>
+                </table>
+            }
+        </Content>
+    </Tab>
+    <Tab>
+        <TitleTemplate>
+            <Icon Name="IconName.PciCardNetwork" /> @localizer["Components"]
+        </TitleTemplate>
+        <Content>
+            @if (computerPartsViewModel != null)
+            {
+                <table class="table table-striped">
+                    <tbody>
+                        @foreach (DevicePartsReadViewModel parts in computerPartsViewModel.OrderBy(item => item.Name))
+                        {
+                            <tr>
+                                <td>@parts.Name</td>
+                                <td>@parts.Labels</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             }
@@ -151,6 +177,7 @@
     private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
     private List<ComputerDataViewModel> computerDataViewModel;
     private List<DeviceHistoryViewModel> deviceHistoryViewModel;
+    private List<DevicePartsReadViewModel> computerPartsViewModel;
 
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();
@@ -202,6 +229,7 @@
         computerReadViewModel = await _computerRepository.GetOneComputer(Guid.Parse(idComuterString));
         computerHardDrivesViewModel = await _computerHardDriveRepository.GetHardDrivesOfAComputer(Guid.Parse(idComuterString));
         computerDataViewModel = await _computerDataRepository.GetAllComputerDataOfAComputer(Guid.Parse(idComuterString), DateTime.Now.AddDays(-1));
+        computerPartsViewModel = await _computerPartsRepository.GetAllComputerPartByComputerId(Guid.Parse(idComuterString));
 
         if (computerDataViewModel.Any())
         {

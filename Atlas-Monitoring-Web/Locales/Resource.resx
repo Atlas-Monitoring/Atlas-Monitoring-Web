@@ -190,4 +190,10 @@
   <data name="NoDataSince24h" xml:space="preserve">
     <value>No data since 24 hours</value>
   </data>
+  <data name="ManufacturerModel" xml:space="preserve">
+    <value>Manufacurer - Model</value>
+  </data>
+  <data name="Components" xml:space="preserve">
+    <value>Components</value>
+  </data>
 </root>

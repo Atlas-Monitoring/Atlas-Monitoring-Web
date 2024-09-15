@@ -70,6 +70,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Components.
+        /// </summary>
+        public static string Components {
+            get {
+                return ResourceManager.GetString("Components", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Computer Name.
         /// </summary>
         public static string ComputerName {
@@ -228,6 +237,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manufacurer - Model.
+        /// </summary>
+        public static string ManufacturerModel {
+            get {
+                return ResourceManager.GetString("ManufacturerModel", resourceCulture);
             }
         }
         

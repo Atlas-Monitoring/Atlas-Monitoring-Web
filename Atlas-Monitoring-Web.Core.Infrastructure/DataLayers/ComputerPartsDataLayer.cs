@@ -6,53 +6,41 @@ using System.Net;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
-    public class ComputerHardDriveDataLayer : IComputerHardDriveDataLayer
+    public class ComputerPartsDataLayer : IComputerPartsDataLayer
     {
         #region Properties
         private readonly string _apiPath = string.Empty;
         #endregion
 
         #region Constructor
-        public ComputerHardDriveDataLayer()
+        public ComputerPartsDataLayer()
         {
             _apiPath = "http://localhost:5241/api";
         }
         #endregion
 
-        #region Public Methods
-        #region Create
-
-        #endregion
-
+        #region Publics Methods
         #region Read
-        public async Task<List<ComputerHardDriveViewModel>> GetHardDrivesOfAComputer(Guid computerId)
+        public async Task<List<DevicePartsReadViewModel>> GetAllComputerPartByComputerId(Guid computerId)
         {
             HttpClient client = new HttpClient();
-            string path = $"{_apiPath}/ComputersHardDrive/{computerId.ToString()}";
+            string path = $"{_apiPath}/ComputerParts/{computerId.ToString()}";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                List<ComputerHardDriveViewModel> computerHardDrives = await response.Content.ReadFromJsonAsync<List<ComputerHardDriveViewModel>>();
-                return computerHardDrives;
+                List<DevicePartsReadViewModel> computerParts = await response.Content.ReadFromJsonAsync<List<DevicePartsReadViewModel>>();
+                return computerParts;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                throw new CustomDataLayerException($"No computer found with id '{computerId.ToString()}'");
+                return new();
             }
             else
             {
                 throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
             }
         }
-        #endregion
-
-        #region Update
-
-        #endregion
-
-        #region Delete
-
         #endregion
         #endregion
     }

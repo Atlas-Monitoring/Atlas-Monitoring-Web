@@ -19,11 +19,13 @@ builder.Services.AddBlazorBootstrap();
 //Scope DataLayer interface
 builder.Services.AddScoped<IComputerDataDataLayer, ComputerDataDataLayer>();
 builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
+builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
 builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
 builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
+builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 var app = builder.Build();
