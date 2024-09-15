@@ -3,19 +3,21 @@ using Atlas_Monitoring_Web.Core.Models.ViewModels;
 using Atlas_Monitoring_Web.CustomException;
 using System.Net.Http.Json;
 using System.Net;
+using Atlas_Monitoring_Web.Core.Models.Internal;
+using Microsoft.Extensions.Options;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
     public class ComputerHardDriveDataLayer : IComputerHardDriveDataLayer
     {
         #region Properties
-        private readonly string _apiPath = string.Empty;
+        private readonly IOptions<AppConfig> _appConfig;
         #endregion
 
         #region Constructor
-        public ComputerHardDriveDataLayer()
+        public ComputerHardDriveDataLayer(IOptions<AppConfig> appConfig)
         {
-            _apiPath = "http://localhost:5241/api";
+            _appConfig = appConfig;
         }
         #endregion
 
@@ -28,7 +30,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<ComputerHardDriveViewModel>> GetHardDrivesOfAComputer(Guid computerId)
         {
             HttpClient client = new HttpClient();
-            string path = $"{_apiPath}/ComputersHardDrive/{computerId.ToString()}";
+            string path = $"{_appConfig.Value.URLApi}/ComputersHardDrive/{computerId.ToString()}";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)

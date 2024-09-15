@@ -3,6 +3,7 @@ using Atlas_Monitoring_Web.Core.Application.Repositories;
 using Atlas_Monitoring_Web.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
+using Atlas_Monitoring_Web.Core.Models.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,26 @@ builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
 builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
 builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
+
+//Add Configuration
+if (builder.Environment.IsDevelopment())
+{
+    IConfiguration config = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .Build();
+
+    builder.Services.Configure<AppConfig>(config.GetSection("AppConfig"));
+}
+else
+{
+    IConfiguration config = new ConfigurationBuilder().Build();
+
+    AppConfig AppConfig = new();
+    AppConfig.URLApi = Environment.GetEnvironmentVariable("URLApi").ToString();
+
+    config.Bind("AppConfig", AppConfig);
+    builder.Services.Configure<AppConfig>(config.GetSection("AppConfig"));
+}
 
 var app = builder.Build();
 

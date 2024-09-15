@@ -1,0 +1,9 @@
+﻿services:
+    web-atlas-monitoring:
+        container_name: web-atlas-monitoring
+        image: ghcr.io/atlas-monitoring/atlas-monitoring-web:latest
+        restart: always
+        environment:
+            - URLApi=http://localhost:5241/api
+        ports:
+            - 80:80

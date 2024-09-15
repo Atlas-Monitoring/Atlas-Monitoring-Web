@@ -1,6 +1,8 @@
 ﻿using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
+using Atlas_Monitoring_Web.Core.Models.Internal;
 using Atlas_Monitoring_Web.Core.Models.ViewModels;
 using Atlas_Monitoring_Web.CustomException;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -9,13 +11,13 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
     public class ComputerDataLayer : IComputerDataLayer
     {
         #region Properties
-        private readonly string _apiPath = string.Empty;
+        private readonly IOptions<AppConfig> _appConfig;
         #endregion
 
         #region Constructor
-        public ComputerDataLayer()
+        public ComputerDataLayer(IOptions<AppConfig> appConfig)
         {
-            _apiPath = "http://localhost:5241/api";
+            _appConfig = appConfig;
         }
         #endregion
 
@@ -24,7 +26,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<ComputerReadViewModel>> GetAllComputers()
         {
             HttpClient client = new HttpClient();
-            string path = $"{_apiPath}/Computers/GetAll";
+            string path = $"{_appConfig.Value.URLApi}/Computers/GetAll";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
@@ -45,7 +47,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<ComputerReadViewModel> GetOneComputer(Guid idComputer)
         {
             HttpClient client = new HttpClient();
-            string path = $"{_apiPath}/Computers/{idComputer.ToString()}";
+            string path = $"{_appConfig.Value.URLApi}/Computers/{idComputer.ToString()}";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
