@@ -3,6 +3,7 @@ using Atlas_Monitoring_Web.Core.Models.Internal;
 using Atlas_Monitoring_Web.Core.Models.ViewModels;
 using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
+using Serilog;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -18,6 +19,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public ComputerDataLayer(IOptions<AppConfig> appConfig)
         {
             _appConfig = appConfig;
+            Log.Information($"API URL = {_appConfig.Value.URLApi}");
         }
         #endregion
 
