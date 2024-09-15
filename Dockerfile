@@ -13,7 +13,7 @@ COPY ["./Atlas-Monitoring-Web.sln", "./"]
 COPY ["./Atlas-Monitoring-Web/Atlas-Monitoring-Web.csproj", "./Atlas-Monitoring-Web/Atlas-Monitoring-Web.csproj"]
 COPY ["./Atlas-Monitoring-Web.Core.Application/Atlas-Monitoring-Web.Core.Application.csproj", "./Atlas-Monitoring-Web.Core.Application/Atlas-Monitoring-Web.Core.Application.csproj"]
 COPY ["./Atlas-Monitoring-Web.Core.Infrastructure/Atlas-Monitoring-Web.Core.Infrastructure.csproj", "./Atlas-Monitoring-Web.Core.Infrastructure/Atlas-Monitoring.Core-Web.Infrastructure.csproj"]
-COPY ["./Atlas-Monitoring-Web.Core.Interface/Atlas-Monitoring-Web.Core.Interface.csproj", "./Atlas-Monitoring-Web.Core.Interface/Atlas-Monitoring-Web.Core.Interface.csproj"]
+COPY ["./Atlas-Monitoring-Web.Core.Interfaces/Atlas-Monitoring-Web.Core.Interfaces.csproj", "./Atlas-Monitoring-Web.Core.Interfaces/Atlas-Monitoring-Web.Core.Interfaces.csproj"]
 COPY ["./Atlas-Monitoring-Web.Core.Models/Atlas-Monitoring-Web.Core.Models.csproj", "./Atlas-Monitoring-Web.Core.Models/Atlas-Monitoring-Web.Core.Models.csproj"]
 COPY ["./Atlas-Monitoring-Web.CustomException/Atlas-Monitoring-Web.CustomException.csproj", "./Atlas-Monitoring-Web.CustomException/Atlas-Monitoring-Web.CustomException.csproj"]
 RUN dotnet restore "./Atlas-Monitoring-Web/Atlas-Monitoring-Web.csproj"
