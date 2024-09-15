@@ -6,6 +6,7 @@
 @using Atlas_Monitoring_Web.CustomException
 @using Atlas_Monitoring_Web.Locales
 @using Microsoft.Extensions.Localization
+@using Serilog
 @inject ToastService ToastService
 @inject PreloadService PreloadService
 @inject IComputerDataRepository _computerDataRepository
@@ -205,6 +206,8 @@
                     IconName = IconName.ExclamationDiamondFill,
                     Type = ToastType.Warning
                 });
+
+            Log.Warning(ex.Message);
         }
         catch (Exception ex)
         {
@@ -215,6 +218,8 @@
                     IconName = IconName.ExclamationDiamondFill,
                     Type = ToastType.Danger
                 });
+
+            Log.Error(ex, "An error occurred !");
         }
         finally
         {

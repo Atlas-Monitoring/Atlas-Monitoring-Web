@@ -4,8 +4,15 @@ using Atlas_Monitoring_Web.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
 using Atlas_Monitoring_Web.Core.Models.Internal;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Add Serilog
+Log.Logger = new LoggerConfiguration()
+    .CreateLogger();
+
+builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console(outputTemplate: "[{Timestamp:[yyyy-MM-dd HH:mm:ss.fff]} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}]"));
 
 builder.Services.AddLocalization();
 builder.Services.AddControllers();
@@ -44,6 +51,8 @@ else
 
     AppConfig AppConfig = new();
     AppConfig.URLApi = Environment.GetEnvironmentVariable("URLApi").ToString();
+
+    Log.Information($"API URL = {AppConfig.URLApi}");
 
     config.Bind("AppConfig", AppConfig);
     builder.Services.Configure<AppConfig>(config.GetSection("AppConfig"));
