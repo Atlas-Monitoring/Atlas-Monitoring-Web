@@ -216,4 +216,61 @@
   <data name="Components" xml:space="preserve">
     <value>Composants</value>
   </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modèle</value>
+  </data>
+  <data name="Manufacturer" xml:space="preserve">
+    <value>Fabricant</value>
+  </data>
+  <data name="DeviceName" xml:space="preserve">
+    <value>Nom de l'appareil</value>
+  </data>
+  <data name="DeviceType" xml:space="preserve">
+    <value>Catégorie de l'appareil</value>
+  </data>
+  <data name="AddDevice" xml:space="preserve">
+    <value>Ajouter l'appareil</value>
+  </data>
+  <data name="Err_SelectValidDeviceType" xml:space="preserve">
+    <value>Veuillez sélectionner une catégorie d'appareil valide</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Non défini</value>
+  </data>
+  <data name="Computer" xml:space="preserve">
+    <value>Ordinateur</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Serveur</value>
+  </data>
+  <data name="Printer" xml:space="preserve">
+    <value>Imprimante</value>
+  </data>
+  <data name="Router" xml:space="preserve">
+    <value>Routeur</value>
+  </data>
+  <data name="Switch" xml:space="preserve">
+    <value>Switch</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Téléphone</value>
+  </data>
+  <data name="MobilePhone" xml:space="preserve">
+    <value>Téléphone portable</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Autres</value>
+  </data>
+  <data name="Err_DeviceNameEmpty" xml:space="preserve">
+    <value>Veuillez saisir un nom pour l'appareil</value>
+  </data>
+  <data name="AddNewDevice" xml:space="preserve">
+    <value>Ajouter un nouvel appareil</value>
+  </data>
+  <data name="Msg_DeviceAdded" xml:space="preserve">
+    <value>L'appareil a bien été ajouté</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
 </root>

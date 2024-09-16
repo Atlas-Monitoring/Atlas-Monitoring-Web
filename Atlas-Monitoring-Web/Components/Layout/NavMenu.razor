@@ -26,7 +26,8 @@
             new NavItem { Id = "1", Href = "/", IconName = IconName.HouseDoorFill, Text = localizer["Home"]},
 
             new NavItem { Id = "2", Text = localizer["Devices"] },
-            new NavItem { Id = "3", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="2"},
+            new NavItem { Id = "3", Href = "/NewDevice", IconName = IconName.DatabaseAdd, Text = localizer["AddNewDevice"], ParentId="2"},
+            new NavItem { Id = "4", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="2"},
         };
 
         return navItems;

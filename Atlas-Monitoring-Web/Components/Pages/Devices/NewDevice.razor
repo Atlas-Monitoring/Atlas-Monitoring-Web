@@ -1,5 +1,223 @@
 ﻿@page "/NewDevice"
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.Database
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@using Atlas_Monitoring_Web.Locales
+@using Microsoft.Extensions.Localization
+@using Serilog
+@inject ToastService ToastService
+@inject PreloadService PreloadService
+@inject IStringLocalizer<Resource> localizer
+@inject IDeviceRepository _deviceRepository
+
+<div style="max-width: 350px; display:block; margin: auto">
+    <div class="row">
+        <div class="form-control col">
+            <label>@localizer["DeviceType"] : </label>
+            <select class="form-control" value="@IdTypeOfDeviceSelected" @onchange="@((ChangeEventArgs e) => UpdateDeviceType(e.Value.ToString()))">
+                @foreach (DeviceType deviceType in ListDeviceType.Where(x => x.Id != DeviceType.Computer.Id))
+                {
+                    <option value="@deviceType.Id">@localizer[deviceType.Name]</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["DeviceName"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.Name" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>Ip : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.Ip" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["Domain"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.Domain" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["UserName"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.UserName" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["DeviceName"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.SerialNumber" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["Model"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.Model" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label>@localizer["Manufacturer"] : </label>
+            <input class="form-control" @bind-value="NewDeviceViewModel.Manufacturer" />
+        </div>
+    </div>
+
+    <Button Color="ButtonColor.Primary" style="display: block; margin: auto; margin-top: 20px" @onclick="AddDevice">@localizer["AddDevice"]</Button>
+</div>
+
+
 
 @code {
+    #region Properties
+    private DeviceViewModel NewDeviceViewModel = new();
+    private List<DeviceType> ListDeviceType = new();
+    private int IdTypeOfDeviceSelected = 1;
+    #endregion
 
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                ListDeviceType = DeviceType.GetAllDeviceType();
+
+                StateHasChanged();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private void UpdateDeviceType(string idDeviceType)
+    {
+        int idDeviceTypeSelected;
+        if (int.TryParse(idDeviceType, out idDeviceTypeSelected))
+        {
+            NewDeviceViewModel.DeviceType = ListDeviceType.Where(x => x.Id == idDeviceTypeSelected).Single();
+        }
+        else
+        {
+            ToastService.Notify(new()
+            {
+                Title = localizer["Warning"],
+                Message = localizer["Err_SelectValidDeviceType"],
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Warning
+            });
+        }
+    }
+
+    private async Task AddDevice()
+    {
+        try
+        {
+            CheckNewDeviceData();
+
+            NewDeviceViewModel = await _deviceRepository.CreateNewDevice(NewDeviceViewModel);
+
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Success"],
+                    Message = localizer["Msg_DeviceAdded"],
+                    IconName = IconName.Check,
+                    Type = ToastType.Success
+                });
+
+            NewDeviceViewModel = new();
+        }
+        catch (CustomWebException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+
+    private void CheckNewDeviceData()
+    {
+        if (NewDeviceViewModel.Name == string.Empty)
+        {
+            throw new CustomWebException(localizer["Err_DeviceNameEmpty"]);
+        }
+        else if (NewDeviceViewModel.DeviceType.Id == DeviceType.Undefined.Id)
+        {
+            throw new CustomWebException(localizer["Err_SelectValidDeviceType"]);
+        }
+    }
+    #endregion
 }
