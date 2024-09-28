@@ -1,5 +1,4 @@
-﻿@page "/NewDevice"
-@using Atlas_Monitoring_Web.Core.Interfaces.Application
+﻿@using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.Database
 @using Atlas_Monitoring_Web.Core.Models.ViewModels
 @using Atlas_Monitoring_Web.CustomException
@@ -10,77 +9,71 @@
 @inject PreloadService PreloadService
 @inject IDeviceRepository _deviceRepository
 
-<div style="max-width: 350px; display:block; margin: auto">
-    <div class="row">
-        <div class="form-control col">
-            <label>@localizer["DeviceType"] : </label>
-            <select class="form-control" @bind="@NewDeviceViewModel.DeviceTypeId">
-                @foreach (DeviceType deviceType in ListDeviceType.Where(x => x.Id != DeviceType.Computer.Id && x.Id != DeviceType.Server.Id))
-                {
-                    <option value="@deviceType.Id">@localizer[deviceType.Name]</option>
-                }
-            </select>
-        </div>
+<div class="row">
+    <div class="form-control col">
+        <label>@localizer["DeviceType"] : </label>
+        <input class="form-control" value="@localizer[deviceReadViewModel.DeviceTypeName]" disabled/>
     </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["DeviceName"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.Name" maxlength="15"/>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>Ip : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.Ip" maxlength="15" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["Domain"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.Domain" maxlength="25" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["UserName"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.UserName" maxlength="48" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["SerialNumber"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.SerialNumber" maxlength="120" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["Model"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.Model" maxlength="60" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col">
-            <label>@localizer["Manufacturer"] : </label>
-            <input class="form-control" @bind-value="NewDeviceViewModel.Manufacturer" maxlength="60" />
-        </div>
-    </div>
-
-    <Button Color="ButtonColor.Primary" style="display: block; margin: auto; margin-top: 20px" @onclick="AddDevice">@localizer["AddDevice"]</Button>
 </div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["DeviceName"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.Name" maxlength="15" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>Ip : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.Ip" maxlength="15" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["Domain"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.Domain" maxlength="25" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["UserName"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.UserName" maxlength="48" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["SerialNumber"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.SerialNumber" maxlength="120" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["Model"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.Model" maxlength="60" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col">
+        <label>@localizer["Manufacturer"] : </label>
+        <input class="form-control" @bind-value="deviceReadViewModel.Manufacturer" maxlength="60" />
+    </div>
+</div>
+
+<Button @ref="updateButton" Color="ButtonColor.Primary" style="display: block; margin: auto;" @onclick="UpdateDevice">@localizer["Save"]</Button>
 
 
 
 @code {
     #region Properties
-    private DeviceWriteViewModel NewDeviceViewModel = new();
-    private List<DeviceType> ListDeviceType = new();
+    [Parameter] public DeviceReadViewModel deviceReadViewModel { get; set; } = new();
+    [Parameter] public EventCallback<bool> CloseModal { get; set; }
+    private Button updateButton = default!;
     #endregion
 
     #region Constructor
@@ -92,8 +85,6 @@
 
             if (firstRender)
             {
-                ListDeviceType = DeviceType.GetAllDeviceType();
-
                 StateHasChanged();
             }
 
@@ -131,23 +122,40 @@
     #endregion
 
     #region Private Methods
-    private async Task AddDevice()
+    private async Task UpdateDevice()
     {
         try
         {
+            updateButton.ShowLoading($"{localizer["Saving"]}...");
+            await Task.Delay(1);
+
             CheckNewDeviceData();
 
-            await _deviceRepository.CreateNewDevice(NewDeviceViewModel);
+            DeviceWriteViewModel deviceWriteViewModel = new DeviceWriteViewModel
+                {
+                    Id = deviceReadViewModel.Id,
+                    DeviceStatus = deviceReadViewModel.DeviceStatus,
+                    DeviceTypeId = deviceReadViewModel.DeviceTypeId,
+                    Name = deviceReadViewModel.Name,
+                    Ip = deviceReadViewModel.Ip,
+                    Domain = deviceReadViewModel.Domain,
+                    UserName = deviceReadViewModel.UserName,
+                    SerialNumber = deviceReadViewModel.SerialNumber,
+                    Model = deviceReadViewModel.Model,
+                    Manufacturer = deviceReadViewModel.Manufacturer
+                };
+
+            await _deviceRepository.UpdateDevice(deviceWriteViewModel);
+
+            await CloseModal.InvokeAsync(true);
 
             ToastService.Notify(new()
                 {
                     Title = localizer["Success"],
-                    Message = localizer["Msg_DeviceAdded"],
+                    Message = localizer["Msg_DeviceUpdated"],
                     IconName = IconName.Check,
                     Type = ToastType.Success
                 });
-
-            NewDeviceViewModel = new();
         }
         catch (CustomWebException ex)
         {
@@ -185,17 +193,17 @@
 
             Log.Error(ex, "An error occurred !");
         }
+        finally
+        {
+            updateButton.HideLoading();
+        }
     }
 
     private void CheckNewDeviceData()
     {
-        if (NewDeviceViewModel.Name == string.Empty)
+        if (deviceReadViewModel.Name == string.Empty)
         {
             throw new CustomWebException(localizer["Err_DeviceNameEmpty"]);
-        }
-        else if (NewDeviceViewModel.DeviceTypeId == DeviceType.Undefined.Id)
-        {
-            throw new CustomWebException(localizer["Err_SelectValidDeviceType"]);
         }
     }
     #endregion

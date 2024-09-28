@@ -1,11 +1,10 @@
 ﻿@using Microsoft.Extensions.Localization
 @using Atlas_Monitoring_Web.Locales
-@inject IStringLocalizer<Resource> localizer
 
 <Sidebar2 Href="/"
           IconName="IconName.Activity"
           Title="Atlas"
-          BadgeText="v1.0.0"
+          BadgeText="v1.0.1"
           DataProvider="Sidebar2DataProvider" />
 
 @code {
@@ -25,8 +24,11 @@
         {
             new NavItem { Id = "1", Href = "/", IconName = IconName.HouseDoorFill, Text = localizer["Home"]},
 
-            new NavItem { Id = "2", Text = localizer["Devices"] },
-            new NavItem { Id = "3", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="2"},
+            new NavItem { Id = "20", Text = localizer["Devices"] },
+            new NavItem { Id = "21", Href = "/NewDevice", IconName = IconName.DatabaseAdd, Text = localizer["AddNewDevice"], ParentId="20"},
+            new NavItem { Id = "22", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="20"},
+            new NavItem { Id = "23", Href = "/Servers", IconName = IconName.Pc, Text = localizer["Server"], ParentId="20"},
+            new NavItem { Id = "24", Href = "/Others", IconName = IconName.ThreeDots, Text = localizer["Others"], ParentId="20"},
         };
 
         return navItems;

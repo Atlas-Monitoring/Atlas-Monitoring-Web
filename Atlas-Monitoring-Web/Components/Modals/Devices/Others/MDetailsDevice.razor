@@ -1,0 +1,61 @@
+﻿@using Atlas_Monitoring_Web.Core.Models.ViewModels
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>@localizer["Property"]</th>
+            <th>@localizer["Value"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@localizer["DeviceTypeName"]</td>
+            <td>@localizer[deviceReadViewModel.DeviceTypeName]</td>
+        </tr>
+        <tr>
+            <td>@localizer["Status"]</td>
+            <td>@localizer[deviceReadViewModel.DeviceStatus.ToString()]</td>
+        </tr>
+        <tr>
+            <td>@localizer["Name"]</td>
+            <td>@deviceReadViewModel.Name</td>
+        </tr>
+        <tr>
+            <td>Ip</td>
+            <td>@deviceReadViewModel.Ip</td>
+        </tr>
+        <tr>
+            <td>@localizer["Domain"]</td>
+            <td>@deviceReadViewModel.Domain</td>
+        </tr>
+        <tr>
+            <td>@localizer["UserName"]</td>
+            <td>@deviceReadViewModel.UserName</td>
+        </tr>
+        <tr>
+            <td>@localizer["SerialNumber"]</td>
+            <td>@deviceReadViewModel.SerialNumber</td>
+        </tr>
+        <tr>
+            <td>@localizer["Manufacturer"]</td>
+            <td>@deviceReadViewModel.Manufacturer</td>
+        </tr>
+        <tr>
+            <td>@localizer["Model"]</td>
+            <td>@deviceReadViewModel.Model</td>
+        </tr>
+        <tr>
+            <td>@localizer["DateAdd"]</td>
+            <td>@deviceReadViewModel.DateAdd.ToString("dd/MM/yyyy HH:mm:ss")</td>
+        </tr>
+        <tr>
+            <td>@localizer["LastUpdate"]</td>
+            <td>@deviceReadViewModel.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss")</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@code {
+    [Parameter] public DeviceReadViewModel deviceReadViewModel { get; set; } = new();
+}

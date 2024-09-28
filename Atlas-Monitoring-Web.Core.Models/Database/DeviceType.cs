@@ -14,5 +14,21 @@
         public static DeviceType Phone = new DeviceType { Id = 7, Name = "Phone" };
         public static DeviceType MobilePhone = new DeviceType { Id = 8, Name = "MobilePhone" };
         public static DeviceType Other = new DeviceType { Id = 9, Name = "Other" };
+
+        public static List<DeviceType> GetAllDeviceType()
+        {
+            return new()
+            {
+                Undefined,
+                Computer,
+                Server,
+                Printer,
+                Router,
+                Switch,
+                Phone,
+                MobilePhone,
+                Other
+            };
+        }
     }
 }
