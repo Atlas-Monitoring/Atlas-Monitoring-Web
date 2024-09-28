@@ -70,6 +70,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Actions.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Add device.
         /// </summary>
         public static string AddDevice {
@@ -84,6 +93,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string AddNewDevice {
             get {
                 return ResourceManager.GetString("AddNewDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
@@ -133,6 +151,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Date.
         /// </summary>
         public static string Date {
@@ -156,6 +183,33 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete device.
+        /// </summary>
+        public static string DeviceDelete {
+            get {
+                return ResourceManager.GetString("DeviceDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Device details.
+        /// </summary>
+        public static string DeviceDetails {
+            get {
+                return ResourceManager.GetString("DeviceDetails", resourceCulture);
             }
         }
         
@@ -187,11 +241,38 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Device category.
+        /// </summary>
+        public static string DeviceTypeName {
+            get {
+                return ResourceManager.GetString("DeviceTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Update device.
+        /// </summary>
+        public static string DeviceUpdate {
+            get {
+                return ResourceManager.GetString("DeviceUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Domain name.
         /// </summary>
         public static string Domain {
             get {
                 return ResourceManager.GetString("Domain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à End of life.
+        /// </summary>
+        public static string EndOfLife {
+            get {
+                return ResourceManager.GetString("EndOfLife", resourceCulture);
             }
         }
         
@@ -286,6 +367,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à In production.
+        /// </summary>
+        public static string InProduction {
+            get {
+                return ResourceManager.GetString("InProduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Last Update.
         /// </summary>
         public static string LastUpdate {
@@ -300,6 +390,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Maintenance.
+        /// </summary>
+        public static string Maintenance {
+            get {
+                return ResourceManager.GetString("Maintenance", resourceCulture);
             }
         }
         
@@ -358,6 +457,42 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Device updated !.
+        /// </summary>
+        public static string Msg_DeviceUpdated {
+            get {
+                return ResourceManager.GetString("Msg_DeviceUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Device deleted.
+        /// </summary>
+        public static string MsgDeviceDeleted {
+            get {
+                return ResourceManager.GetString("MsgDeviceDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This action can&apos;t be rollback !.
+        /// </summary>
+        public static string MsgThisActionCantBeRollback {
+            get {
+                return ResourceManager.GetString("MsgThisActionCantBeRollback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New.
+        /// </summary>
+        public static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à No data.
         /// </summary>
         public static string NoData {
@@ -390,6 +525,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Other {
             get {
                 return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Others.
+        /// </summary>
+        public static string Others {
+            get {
+                return ResourceManager.GetString("Others", resourceCulture);
             }
         }
         
@@ -430,6 +574,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Property.
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this device ?.
+        /// </summary>
+        public static string QuestionDeviceDeletion {
+            get {
+                return ResourceManager.GetString("QuestionDeviceDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à RAM Installed.
         /// </summary>
         public static string RamInstalled {
@@ -439,11 +601,38 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ready.
+        /// </summary>
+        public static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Router.
         /// </summary>
         public static string Router {
             get {
                 return ResourceManager.GetString("Router", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Saving.
+        /// </summary>
+        public static string Saving {
+            get {
+                return ResourceManager.GetString("Saving", resourceCulture);
             }
         }
         
@@ -471,6 +660,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Server {
             get {
                 return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Servers.
+        /// </summary>
+        public static string Servers {
+            get {
+                return ResourceManager.GetString("Servers", resourceCulture);
             }
         }
         
@@ -516,6 +714,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Value.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

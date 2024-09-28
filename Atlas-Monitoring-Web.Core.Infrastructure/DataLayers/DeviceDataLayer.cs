@@ -23,7 +23,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 
         #region Publics Methods
         #region Create
-        public async Task<DeviceViewModel> CreateNewDevice(DeviceViewModel newDevice)
+        public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device";
@@ -31,7 +31,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.PostAsJsonAsync(path, newDevice);
             if (response.StatusCode == HttpStatusCode.Created)
             {
-                return await response.Content.ReadFromJsonAsync<DeviceViewModel>(); ;
+                return await response.Content.ReadFromJsonAsync<DeviceReadViewModel>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
@@ -45,7 +45,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read
-        public async Task<List<DeviceViewModel>> ListOfDevices()
+        public async Task<List<DeviceReadViewModel>> ListOfDevices()
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device/GetAll";
@@ -53,7 +53,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return await response.Content.ReadFromJsonAsync<List<DeviceViewModel>>(); ;
+                return await response.Content.ReadFromJsonAsync<List<DeviceReadViewModel>>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
@@ -65,7 +65,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             }
         }
 
-        public async Task<List<DeviceViewModel>> ListOfDevicesFilteredOnType(int deviceTypeId)
+        public async Task<List<DeviceReadViewModel>> ListOfDevicesFilteredOnType(int deviceTypeId)
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device/GetAllFiltered/{deviceTypeId}";
@@ -73,7 +73,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return await response.Content.ReadFromJsonAsync<List<DeviceViewModel>>(); ;
+                return await response.Content.ReadFromJsonAsync<List<DeviceReadViewModel>>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
@@ -85,7 +85,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             }
         }
 
-        public async Task<DeviceViewModel> GetOneDevice(Guid deviceId)
+        public async Task<DeviceReadViewModel> GetOneDevice(Guid deviceId)
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device/{deviceId}";
@@ -93,7 +93,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return await response.Content.ReadFromJsonAsync<DeviceViewModel>(); ;
+                return await response.Content.ReadFromJsonAsync<DeviceReadViewModel>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
@@ -107,7 +107,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         #endregion
 
         #region Update
-        public async Task<DeviceViewModel> UpdateDevice(DeviceViewModel updatedDevice)
+        public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device/{updatedDevice.Id}";
@@ -115,7 +115,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.PutAsJsonAsync(path, updatedDevice);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return await response.Content.ReadFromJsonAsync<DeviceViewModel>(); ;
+                return await response.Content.ReadFromJsonAsync<DeviceReadViewModel>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
@@ -129,7 +129,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         #endregion
 
         #region Delete
-        public async Task<DeviceViewModel> DeleteDevice(Guid deviceId)
+        public async Task<DeviceReadViewModel> DeleteDevice(Guid deviceId)
         {
             HttpClient client = new HttpClient();
             string path = $"{_appConfig.Value.URLApi}/Device/{deviceId}";
@@ -137,7 +137,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.DeleteAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return await response.Content.ReadFromJsonAsync<DeviceViewModel>(); ;
+                return await response.Content.ReadFromJsonAsync<DeviceReadViewModel>(); ;
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {

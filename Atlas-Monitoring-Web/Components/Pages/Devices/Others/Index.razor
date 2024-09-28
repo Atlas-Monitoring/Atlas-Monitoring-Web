@@ -1,0 +1,228 @@
+﻿@page "/Others"
+@using Atlas_Monitoring_Web.Components.Modals.Devices.Others
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@using Microsoft.Extensions.Localization
+@using Atlas_Monitoring_Web.Locales
+@using Serilog
+@inject ToastService ToastService
+@inject PreloadService PreloadService
+@inject NavigationManager NavigationManager
+@inject IDeviceRepository _deviceRepository
+
+<Grid @ref="grid" TItem="DeviceReadViewModel"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="DevicesDataProvider"
+      AllowFiltering="true"
+      AllowRowClick="true"
+      AllowSorting="true"
+      Responsive="true">
+
+    <GridColumns>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText="@localizer["DeviceTypeName"]" PropertyName="DeviceTypeName" SortKeySelector="item => item.DeviceTypeName">
+            @localizer[context.DeviceTypeName]
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText="@localizer["Status"]" PropertyName="DeviceStatus" SortKeySelector="item => item.DeviceStatus">
+            @localizer[context.DeviceStatus.ToString()]
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["DeviceName"] PropertyName="Name" SortKeySelector="item => item.Name">
+            @context.Name
+        </GridColumn>
+        @* Todo : Définir les colonnes à afficher puis tester *@
+        <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["Manufacturer"] PropertyName="Manufacturer" SortKeySelector="item => item.Manufacturer">
+            @context.Manufacturer
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["Model"] PropertyName="Model" SortKeySelector="item => item.Model">
+            @context.Model
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText="Ip" PropertyName="Ip" SortKeySelector="item => item.Ip">
+            @context.Ip
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["LastUpdate"] PropertyName="DateUpdated" SortKeySelector="item => item.DateUpdated">
+            @context.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss") @GetMinutesFromDateTime(context.DateUpdated)
+        </GridColumn>
+        <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["Actions"]>
+            <Button @onclick="() => ModalDetailDevice(context)" Color="ButtonColor.Dark" TooltipTitle="@localizer["DeviceDetails"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Search" /></Button>
+            <Button @onclick="() => ModalUpdateDevice(context)" Color="ButtonColor.Warning" TooltipTitle="@localizer["DeviceUpdate"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.PencilFill" /></Button>
+            <Button @onclick="() => DeleteDevice(context)" Color="ButtonColor.Danger" TooltipTitle="@localizer["DeviceDelete"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Trash3Fill" /></Button>
+        </GridColumn>
+    </GridColumns>
+</Grid>
+
+<Modal @ref="modal" Size="ModalSize.Large"></Modal>
+<ConfirmDialog @ref="confirmDialog"/>
+
+@code {
+    #region Properties
+    private List<DeviceReadViewModel> listOfDevice { get; set; } = new();
+    private Grid<DeviceReadViewModel> grid = default!;
+    private Modal modal = default!;
+    private ConfirmDialog confirmDialog = default!;
+    #endregion
+
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                await LoadData();
+                await grid.RefreshDataAsync();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task LoadData()
+    {
+        listOfDevice = await _deviceRepository.ListOfDevices();
+    }
+
+    private async Task<GridDataProviderResult<DeviceReadViewModel>> DevicesDataProvider(GridDataProviderRequest<DeviceReadViewModel> request)
+    {
+        return await Task.FromResult(request.ApplyTo(listOfDevice));
+    }
+
+    private string GetMinutesFromDateTime(DateTime dateTime)
+    {
+        TimeSpan diffOfDates = DateTime.Now - dateTime;
+
+        if (diffOfDates.Days > 0)
+        {
+            return $"({diffOfDates.Days} {localizer["Day"]})";
+        }
+        else if (diffOfDates.Hours > 0)
+        {
+            return $"({diffOfDates.Hours} {localizer["Hour"]})";
+        }
+        else if (diffOfDates.Minutes > 0)
+        {
+            return $"({diffOfDates.Minutes} {localizer["Minute"]})";
+        }
+        else if (diffOfDates.Seconds > 0)
+        {
+            return $"({diffOfDates.Seconds} {localizer["Second"]})";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+
+    private async Task ModalDetailDevice(DeviceReadViewModel deviceReadViewModel)
+    {
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("deviceReadViewModel", deviceReadViewModel);
+
+        await modal.ShowAsync<MDetailsDevice>(title: localizer["DeviceDetails"], parameters: parameters);
+    }
+
+    private async Task ModalUpdateDevice(DeviceReadViewModel deviceReadViewModel)
+    {
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("deviceReadViewModel", deviceReadViewModel);
+        parameters.Add("CloseModal", EventCallback.Factory.Create<bool>(this, CloseModal));
+
+        await modal.ShowAsync<MUpdateDevice>(title: localizer["DeviceUpdate"], parameters: parameters);
+    }
+
+    private async Task CloseModal(bool reloadGrid)
+    {
+        await LoadData();
+        await grid.RefreshDataAsync();
+        await modal.HideAsync();
+    }
+
+    private async Task DeleteDevice(DeviceReadViewModel device)
+    {
+        try
+        {
+            var options = new ConfirmDialogOptions
+            {
+                YesButtonText = localizer["Confirm"],
+                YesButtonColor = ButtonColor.Success,
+                NoButtonText = localizer["Cancel"],
+                NoButtonColor = ButtonColor.Danger
+            };
+
+            var confirmation = await confirmDialog.ShowAsync(
+            title: localizer["QuestionDeviceDeletion"],
+            message1: localizer["MsgThisActionCantBeRollback"],
+            confirmDialogOptions: options);
+
+            if (confirmation)
+            {
+                await _deviceRepository.DeleteDevice(device.Id);
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["MsgDeviceDeleted"],
+                        IconName = IconName.Check,
+                        Type = ToastType.Success
+                    });
+
+                await LoadData();
+                await grid.RefreshDataAsync();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+    #endregion
+}

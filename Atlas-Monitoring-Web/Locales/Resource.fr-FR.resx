@@ -273,4 +273,73 @@
   <data name="Success" xml:space="preserve">
     <value>Succès</value>
   </data>
+  <data name="DeviceTypeName" xml:space="preserve">
+    <value>Catégorie d'appareil</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Autres</value>
+  </data>
+  <data name="Servers" xml:space="preserve">
+    <value>Serveurs</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Propriété</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Nouveau</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="InProduction" xml:space="preserve">
+    <value>En production</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="EndOfLife" xml:space="preserve">
+    <value>Fin de vie</value>
+  </data>
+  <data name="DeviceDetails" xml:space="preserve">
+    <value>Détails de l'appareil</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="DeviceUpdate" xml:space="preserve">
+    <value>Mettre à jour l'appareil</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Détails</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Sauvegarder</value>
+  </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Sauvegarde</value>
+  </data>
+  <data name="Msg_DeviceUpdated" xml:space="preserve">
+    <value>Appareil mis à jour !</value>
+  </data>
+  <data name="MsgDeviceDeleted" xml:space="preserve">
+    <value>Appareil supprimé</value>
+  </data>
+  <data name="QuestionDeviceDeletion" xml:space="preserve">
+    <value>Êtes-vous sur de vouloir supprimer cet appareil ? </value>
+  </data>
+  <data name="MsgThisActionCantBeRollback" xml:space="preserve">
+    <value>Cette action est irréversible !</value>
+  </data>
+  <data name="DeviceDelete" xml:space="preserve">
+    <value>Supprimer l'appareil</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
 </root>

@@ -253,4 +253,73 @@
   <data name="Success" xml:space="preserve">
     <value>Success</value>
   </data>
+  <data name="DeviceTypeName" xml:space="preserve">
+    <value>Device category</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Servers" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="InProduction" xml:space="preserve">
+    <value>In production</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="EndOfLife" xml:space="preserve">
+    <value>End of life</value>
+  </data>
+  <data name="DeviceDetails" xml:space="preserve">
+    <value>Device details</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="DeviceUpdate" xml:space="preserve">
+    <value>Update device</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Saving</value>
+  </data>
+  <data name="Msg_DeviceUpdated" xml:space="preserve">
+    <value>Device updated !</value>
+  </data>
+  <data name="MsgDeviceDeleted" xml:space="preserve">
+    <value>Device deleted</value>
+  </data>
+  <data name="QuestionDeviceDeletion" xml:space="preserve">
+    <value>Are you sure you want to delete this device ?</value>
+  </data>
+  <data name="MsgThisActionCantBeRollback" xml:space="preserve">
+    <value>This action can't be rollback !</value>
+  </data>
+  <data name="DeviceDelete" xml:space="preserve">
+    <value>Delete device</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
 </root>
