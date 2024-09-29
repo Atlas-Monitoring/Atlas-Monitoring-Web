@@ -28,4 +28,6 @@ RUN dotnet publish "./Atlas-Monitoring-Web.csproj" -c $BUILD_CONFIGURATION -o /a
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+#Install ping
+RUN apt-get update && apt-get install -y iputils-ping
 ENTRYPOINT ["dotnet", "Atlas-Monitoring-Web.dll"]
