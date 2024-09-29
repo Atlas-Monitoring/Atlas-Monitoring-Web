@@ -342,4 +342,28 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirmer</value>
   </data>
+  <data name="PingDevice" xml:space="preserve">
+    <value>Ping l'appareil</value>
+  </data>
+  <data name="Msg_IpNotInCorrectFormat" xml:space="preserve">
+    <value>L'adresse IP n'a pas un format valide !</value>
+  </data>
+  <data name="Msg_HostnameDontMatch" xml:space="preserve">
+    <value>Le nom de l'hôte ne correspond pas au nom résolu (Base de données = {0}, Résolu = {1})</value>
+  </data>
+  <data name="ResultPingSucces" xml:space="preserve">
+    <value>Réponse de {0} : octets={1} temps={2}ms</value>
+  </data>
+  <data name="PingResultFailed" xml:space="preserve">
+    <value>Réponse de {0} : {1}</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Lancer</value>
+  </data>
+  <data name="Response" xml:space="preserve">
+    <value>Réponse</value>
+  </data>
+  <data name="Msg_UnableToResolveHostname" xml:space="preserve">
+    <value>Impossible de résoudre le nom d'hôte</value>
+  </data>
 </root>

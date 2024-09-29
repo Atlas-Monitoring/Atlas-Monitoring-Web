@@ -322,4 +322,28 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="PingDevice" xml:space="preserve">
+    <value>Ping device</value>
+  </data>
+  <data name="Msg_IpNotInCorrectFormat" xml:space="preserve">
+    <value>The IP is not in a correct format !</value>
+  </data>
+  <data name="Msg_HostnameDontMatch" xml:space="preserve">
+    <value>Hostname from database don't match with the hostname resolved (Database = {0}, Resolved = {1})</value>
+  </data>
+  <data name="ResultPingSucces" xml:space="preserve">
+    <value>Response from {0} : bytes={1} time={2}ms</value>
+  </data>
+  <data name="PingResultFailed" xml:space="preserve">
+    <value>Response from {0} : {1}</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Response" xml:space="preserve">
+    <value>Response</value>
+  </data>
+  <data name="Msg_UnableToResolveHostname" xml:space="preserve">
+    <value>Unable to resolve hostname</value>
+  </data>
 </root>
