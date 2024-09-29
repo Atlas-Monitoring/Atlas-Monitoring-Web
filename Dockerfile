@@ -29,5 +29,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 #Install ping
+USER root
 RUN apt-get update && apt-get install -y iputils-ping
+USER app
 ENTRYPOINT ["dotnet", "Atlas-Monitoring-Web.dll"]
