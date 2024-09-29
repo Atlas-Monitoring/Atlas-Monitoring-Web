@@ -4,7 +4,6 @@ using Atlas_Monitoring_Web.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
 using Atlas_Monitoring_Web.Core.Models.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

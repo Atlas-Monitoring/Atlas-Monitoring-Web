@@ -466,6 +466,33 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Hostname from database don&apos;t match with the hostname resolved (Database = {0}, Resolved = {1}).
+        /// </summary>
+        public static string Msg_HostnameDontMatch {
+            get {
+                return ResourceManager.GetString("Msg_HostnameDontMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The IP is not in a correct format !.
+        /// </summary>
+        public static string Msg_IpNotInCorrectFormat {
+            get {
+                return ResourceManager.GetString("Msg_IpNotInCorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Unable to resolve hostname.
+        /// </summary>
+        public static string Msg_UnableToResolveHostname {
+            get {
+                return ResourceManager.GetString("Msg_UnableToResolveHostname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Device deleted.
         /// </summary>
         public static string MsgDeviceDeleted {
@@ -565,6 +592,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ping device.
+        /// </summary>
+        public static string PingDevice {
+            get {
+                return ResourceManager.GetString("PingDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Response from {0} : {1}.
+        /// </summary>
+        public static string PingResultFailed {
+            get {
+                return ResourceManager.GetString("PingResultFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Printer.
         /// </summary>
         public static string Printer {
@@ -606,6 +651,24 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Ready {
             get {
                 return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Response.
+        /// </summary>
+        public static string Response {
+            get {
+                return ResourceManager.GetString("Response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Response from {0} : bytes={1} time={2}ms.
+        /// </summary>
+        public static string ResultPingSucces {
+            get {
+                return ResourceManager.GetString("ResultPingSucces", resourceCulture);
             }
         }
         
@@ -669,6 +732,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Servers {
             get {
                 return ResourceManager.GetString("Servers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         

@@ -1,0 +1,147 @@
+﻿@using Atlas_Monitoring_Web.Core.Models.Internal
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using System.Text
+@using System.Net.NetworkInformation
+@using System.Net
+@using Serilog
+
+<h3 style="color: red" hidden="@(MessageHostnameDontMatch == string.Empty)">@MessageHostnameDontMatch</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@localizer["Response"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ResultOfPing result in ListResultOfPing)
+        {
+            <tr>
+                <td>@result.Message</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<Button @ref="startPingButton" Color="ButtonColor.Primary" @onclick="() => StartPing()" Style="align-self: end">@localizer["Start"]</Button>
+
+@code {
+    #region Properties
+    [Parameter] public DeviceReadViewModel DeviceToPing { get; set; } = new();
+    private List<ResultOfPing> ListResultOfPing = new();
+    private string HostnameDetected = string.Empty;
+    private string MessageHostnameDontMatch = string.Empty;
+
+    private Button startPingButton = default!;
+    #endregion
+
+    #region Constructor
+
+    #endregion
+
+    #region Private Methods
+    private async Task StartPing(int echoNum = 4)
+    {
+        try
+        {
+            startPingButton.ShowLoading("Ping...");
+            await Task.Delay(1);
+
+            ListResultOfPing = new();
+
+            if (CheckIfIpIsValid())
+            {
+                // Create a buffer of 32 bytes of data to be transmitted.
+                string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+
+                int timeout = 5 * 1000;
+                Ping pingSender = new Ping();
+                PingOptions pingOptions = new PingOptions(64, true);
+
+                await GetHostFromIp();
+
+                for (int i = 0; i < echoNum; i++)
+                {
+                    PingReply reply = await pingSender.SendPingAsync(DeviceToPing.Ip, timeout, buffer, pingOptions);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        ListResultOfPing.Add(new()
+                            {
+                                ResponseTimeInMS = reply.RoundtripTime,
+                                PingSucces = true,
+                                Message = string.Format(localizer["ResultPingSucces"], DeviceToPing.Ip, buffer.Length, reply.RoundtripTime == 0 ? "<1" : reply.RoundtripTime)
+                            });
+                    }
+                    else
+                    {
+                        ListResultOfPing.Add(new()
+                            {
+                                ResponseTimeInMS = reply.RoundtripTime,
+                                PingSucces = false,
+                                Message = string.Format(localizer["PingResultFailed"], DeviceToPing.Ip, reply.Status.ToString())
+                            });
+                    }
+
+                    StateHasChanged();
+
+                    await Task.Delay(1000);
+                }
+            }
+            else
+            {
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Warning"],
+                        Message = $"{localizer["Msg_IpNotInCorrectFormat"]}, IP = {DeviceToPing.Ip}",
+                        IconName = IconName.ExclamationDiamondFill,
+                        Type = ToastType.Warning
+                    });
+
+                Log.Warning($"{localizer["Msg_IpNotInCorrectFormat"]}, IP = {DeviceToPing.Ip}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            startPingButton.HideLoading();
+        }
+    }
+
+    private async Task GetHostFromIp()
+    {
+        try
+        {
+            IPHostEntry entry = await Dns.GetHostEntryAsync(DeviceToPing.Ip);
+            if (entry != null)
+            {
+                HostnameDetected = entry.HostName;
+
+                if (HostnameDetected.Contains(".")) { HostnameDetected = HostnameDetected.Split(".")[0]; }
+
+                if (HostnameDetected != DeviceToPing.Name) { MessageHostnameDontMatch = string.Format(localizer["Msg_HostnameDontMatch"], DeviceToPing.Name, HostnameDetected); }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageHostnameDontMatch = localizer["Msg_UnableToResolveHostname"];
+        }
+    }
+
+    private bool CheckIfIpIsValid()
+    {
+        return IPAddress.TryParse(DeviceToPing.Ip, out IPAddress? IpAddress);
+    }
+    #endregion
+}

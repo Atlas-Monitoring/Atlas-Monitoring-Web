@@ -1,4 +1,5 @@
 ﻿@page "/Others"
+@using Atlas_Monitoring_Web.Components.Modals.Devices
 @using Atlas_Monitoring_Web.Components.Modals.Devices.Others
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.ViewModels
@@ -45,6 +46,10 @@
         <GridColumn TItem="DeviceReadViewModel" HeaderText=@localizer["Actions"]>
             <Button @onclick="() => ModalDetailDevice(context)" Color="ButtonColor.Dark" TooltipTitle="@localizer["DeviceDetails"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Search" /></Button>
             <Button @onclick="() => ModalUpdateDevice(context)" Color="ButtonColor.Warning" TooltipTitle="@localizer["DeviceUpdate"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.PencilFill" /></Button>
+            @if (context.Ip != string.Empty)
+            {
+                <Button @onclick="() => ModalPingDevice(context)" Color="ButtonColor.Info" TooltipTitle="@localizer["PingDevice"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Link45Deg" /></Button>
+            }
             <Button @onclick="() => DeleteDevice(context)" Color="ButtonColor.Danger" TooltipTitle="@localizer["DeviceDelete"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Trash3Fill" /></Button>
         </GridColumn>
     </GridColumns>
@@ -157,6 +162,14 @@
         parameters.Add("CloseModal", EventCallback.Factory.Create<bool>(this, CloseModal));
 
         await modal.ShowAsync<MUpdateDevice>(title: localizer["DeviceUpdate"], parameters: parameters);
+    }
+
+    private async Task ModalPingDevice(DeviceReadViewModel deviceReadViewModel)
+    {
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("DeviceToPing", deviceReadViewModel);
+
+        await modal.ShowAsync<MPingDevice>(title: localizer["PingDevice"], parameters: parameters);
     }
 
     private async Task CloseModal(bool reloadGrid)
