@@ -130,7 +130,7 @@
 
                 if (HostnameDetected.Contains(".")) { HostnameDetected = HostnameDetected.Split(".")[0]; }
 
-                if (HostnameDetected != DeviceToPing.Name) { MessageHostnameDontMatch = string.Format(localizer["Msg_HostnameDontMatch"], DeviceToPing.Name, HostnameDetected); }
+                if (HostnameDetected.ToUpper() != DeviceToPing.Name.ToUpper()) { MessageHostnameDontMatch = string.Format(localizer["Msg_HostnameDontMatch"], DeviceToPing.Name.ToUpper(), HostnameDetected.ToUpper()); }
             }
         }
         catch (Exception ex)
