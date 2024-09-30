@@ -366,4 +366,7 @@
   <data name="Msg_UnableToResolveHostname" xml:space="preserve">
     <value>Impossible de résoudre le nom d'hôte</value>
   </data>
+  <data name="Software" xml:space="preserve">
+    <value>Logiciel</value>
+  </data>
 </root>

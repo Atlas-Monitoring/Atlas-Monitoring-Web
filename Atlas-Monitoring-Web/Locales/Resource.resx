@@ -346,4 +346,7 @@
   <data name="Msg_UnableToResolveHostname" xml:space="preserve">
     <value>Unable to resolve hostname</value>
   </data>
+  <data name="Software" xml:space="preserve">
+    <value>Software</value>
+  </data>
 </root>
