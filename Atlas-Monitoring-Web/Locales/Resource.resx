@@ -349,4 +349,10 @@
   <data name="Software" xml:space="preserve">
     <value>Software</value>
   </data>
+  <data name="DeleteDevice" xml:space="preserve">
+    <value>Delete device</value>
+  </data>
+  <data name="DeletetionMessageDevice" xml:space="preserve">
+    <value>Are you sure you want to delete this device ?</value>
+  </data>
 </root>

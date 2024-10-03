@@ -28,7 +28,11 @@ namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
         #endregion
 
         #region Delete
-
+        /// <summary>
+        /// Delete computer
+        /// </summary>
+        /// <param name="idComputer">Id of computer</param>
+        Task DeleteComputer(Guid idComputer);
         #endregion
     }
 }
