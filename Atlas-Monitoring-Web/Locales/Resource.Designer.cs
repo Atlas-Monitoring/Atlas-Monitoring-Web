@@ -187,6 +187,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete device.
+        /// </summary>
+        public static string DeleteDevice {
+            get {
+                return ResourceManager.GetString("DeleteDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this device ?.
+        /// </summary>
+        public static string DeletetionMessageDevice {
+            get {
+                return ResourceManager.GetString("DeletetionMessageDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Details.
         /// </summary>
         public static string Details {

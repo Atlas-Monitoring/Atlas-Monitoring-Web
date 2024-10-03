@@ -14,7 +14,7 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
         public ComputerRepository(IComputerDataLayer computerDataLayer)
         {
             _computerDataLayer = computerDataLayer;
-        }
+        }        
         #endregion
 
         #region Public Methods
@@ -27,6 +27,13 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
         public async Task<ComputerReadViewModel> GetOneComputer(Guid idComputer)
         {
             return await _computerDataLayer.GetOneComputer(idComputer);
+        }
+        #endregion
+
+        #region Delete
+        public async Task DeleteComputer(Guid idComputer)
+        {
+            await _computerDataLayer.DeleteComputer(idComputer);
         }
         #endregion
         #endregion

@@ -20,7 +20,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         {
             _appConfig = appConfig;
             Log.Information($"API URL = {_appConfig.Value.URLApi}");
-        }
+        }        
         #endregion
 
         #region Public Methods
@@ -62,6 +62,24 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
                 throw new CustomDataLayerException($"No computer found with id '{idComputer.ToString()}'");
             }
             else
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
+        #endregion
+
+        #region Delete
+        public async Task DeleteComputer(Guid idComputer)
+        {
+            HttpClient client = new HttpClient();
+            string path = $"{_appConfig.Value.URLApi}/Computers/{idComputer.ToString()}";
+
+            HttpResponseMessage response = await client.DeleteAsync(path);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No computer found with id '{idComputer.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
             }

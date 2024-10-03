@@ -15,6 +15,10 @@
 @inject IComputerPartsRepository _computerPartsRepository
 @inject IDeviceSoftwareInstalledRepository _deviceSoftwareInstalledRepository
 
+<div class="d-grid justify-content-md-end" style="margin-bottom: 20px">
+    <Button Color="ButtonColor.Danger" @onclick="DeleteComputer">@localizer["DeleteDevice"]</Button>
+</div>
+
 <Tabs EnableFadeEffect="true">
     <Tab Active="true">
         <TitleTemplate>
@@ -191,6 +195,7 @@
     </Tab>
 </Tabs>
 
+<ConfirmDialog @ref="confirmDialog" />
 
 @code {
     #region Properties
@@ -205,6 +210,8 @@
 
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();
+
+    private ConfirmDialog confirmDialog = default!;
     #endregion
 
     #region Constructor
@@ -297,6 +304,28 @@
     private string GetPourcentDiskFree(double totalSpace, double spaceUsed)
     {
         return (100 - (100 * spaceUsed / totalSpace)).ToString("0.00");
+    }
+
+    private async Task DeleteComputer()
+    {
+        var options = new ConfirmDialogOptions
+            {
+                YesButtonText = localizer["Confirm"],
+                YesButtonColor = ButtonColor.Success,
+                NoButtonText = localizer["Cancel"],
+                NoButtonColor = ButtonColor.Danger
+            };
+
+        var confirmation = await confirmDialog.ShowAsync(
+            title: localizer["DeletetionMessageDevice"],
+            message1: localizer["MsgThisActionCantBeRollback"],
+            confirmDialogOptions: options);
+
+        if (confirmation)
+        {
+            await _computerRepository.DeleteComputer(Guid.Parse(idComuterString));
+            NavigationManager.NavigateTo("/Computers", true);
+        }
     }
     #endregion
 }

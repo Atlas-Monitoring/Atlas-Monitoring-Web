@@ -367,6 +367,12 @@
     <value>Impossible de résoudre le nom d'hôte</value>
   </data>
   <data name="Software" xml:space="preserve">
-    <value>Logiciel</value>
+    <value>Logiciels</value>
+  </data>
+  <data name="DeleteDevice" xml:space="preserve">
+    <value>Supprimer l'appareil</value>
+  </data>
+  <data name="DeletetionMessageDevice" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer cet appareil ?</value>
   </data>
 </root>
