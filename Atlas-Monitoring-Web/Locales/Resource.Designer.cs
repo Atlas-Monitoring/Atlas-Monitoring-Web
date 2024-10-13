@@ -934,6 +934,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version of reporteur.
+        /// </summary>
+        public static string VersionOfReporter {
+            get {
+                return ResourceManager.GetString("VersionOfReporter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Warning.
         /// </summary>
         public static string Warning {

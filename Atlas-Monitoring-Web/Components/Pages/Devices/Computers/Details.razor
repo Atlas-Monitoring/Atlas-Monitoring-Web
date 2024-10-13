@@ -30,6 +30,10 @@
                 <table class="table table-striped">
                     <tbody>
                         <tr>
+                            <th>@localizer["VersionOfReporter"]</th>
+                            <td>@versionOfReporter</td>
+                        </tr>
+                        <tr>
                             <th>@localizer["Status"]</th>
                             <td></td>
                         </tr>
@@ -214,6 +218,7 @@
 
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();
+    private string versionOfReporter = string.Empty;
 
     private ConfirmDialog confirmDialog = default!;
     #endregion
@@ -302,6 +307,11 @@
                     PointRadius = 0, // hide points
                     PointHoverRadius = 4,
             });
+        }
+
+        if (computerSoftwareList.Any() && computerSoftwareList.Where(item => item.AppName == "Atlas Monitoring Reporter").Any())
+        {
+            versionOfReporter = computerSoftwareList.Where(item => item.AppName == "Atlas Monitoring Reporter").First().Version;
         }
     }
 

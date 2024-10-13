@@ -391,4 +391,7 @@
   <data name="NumberOfLogicalProcessors" xml:space="preserve">
     <value>Number of Logical Processors</value>
   </data>
+  <data name="VersionOfReporter" xml:space="preserve">
+    <value>Version of reporteur</value>
+  </data>
 </root>
