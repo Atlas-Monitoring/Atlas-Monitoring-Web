@@ -1,6 +1,39 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
-    </Found>
-</Router>
+﻿@using Atlas_Monitoring_Web.Components.Layout
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage protectedSessionStorage
+
+ <CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <p>@localizer["Unauthorized"]</p>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">@localizer["NotFound"]</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        string? token = (await protectedSessionStorage.GetAsync<string>("token")).Value;
+
+        if (token is null && !NavigationManager.Uri.Contains("login"))
+        {
+            NavigationManager.NavigateTo("/login", true);
+        }
+        else if (token is not null && NavigationManager.Uri.Contains("login"))
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+    }
+}

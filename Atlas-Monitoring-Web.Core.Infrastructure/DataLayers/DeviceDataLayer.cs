@@ -5,6 +5,7 @@ using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Net;
+using System.Net.Http;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
@@ -12,12 +13,14 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
     {
         #region Properties
         private readonly IOptions<AppConfig> _appConfig;
+        private readonly HttpClient _httpClient;
         #endregion
 
         #region Constructor
-        public DeviceDataLayer(IOptions<AppConfig> appConfig)
+        public DeviceDataLayer(IOptions<AppConfig> appConfig, HttpClient httpClient)
         {
             _appConfig = appConfig;
+            _httpClient = httpClient;
         }
         #endregion
 
@@ -26,6 +29,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device";
 
             HttpResponseMessage response = await client.PostAsJsonAsync(path, newDevice);
@@ -48,6 +52,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<DeviceReadViewModel>> ListOfDevices()
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device/GetAll";
 
             HttpResponseMessage response = await client.GetAsync(path);
@@ -68,6 +73,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<DeviceReadViewModel>> ListOfDevicesFilteredOnType(int deviceTypeId)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device/GetAllFiltered/{deviceTypeId}";
 
             HttpResponseMessage response = await client.GetAsync(path);
@@ -88,6 +94,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<DeviceReadViewModel> GetOneDevice(Guid deviceId)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device/{deviceId}";
 
             HttpResponseMessage response = await client.GetAsync(path);
@@ -110,6 +117,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device/{updatedDevice.Id}";
 
             HttpResponseMessage response = await client.PutAsJsonAsync(path, updatedDevice);
@@ -132,6 +140,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<DeviceReadViewModel> DeleteDevice(Guid deviceId)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Device/{deviceId}";
 
             HttpResponseMessage response = await client.DeleteAsync(path);

@@ -5,6 +5,7 @@ using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Net;
+using System.Net.Http;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
@@ -12,12 +13,14 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
     {
         #region Properties
         private readonly IOptions<AppConfig> _appConfig;
+        private readonly HttpClient _httpClient;
         #endregion
 
         #region Constructor
-        public DeviceSoftwareInstalledDataLayer(IOptions<AppConfig> appConfig)
+        public DeviceSoftwareInstalledDataLayer(IOptions<AppConfig> appConfig, HttpClient httpClient)
         {
             _appConfig = appConfig;
+            _httpClient = httpClient;
         }
         #endregion
 
@@ -26,6 +29,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<DeviceSoftwareInstalledReadViewModel>> ListOfSoftwareOnDevice(Guid deviceId)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/DeviceSoftwareInstalled/{deviceId.ToString()}";
 
             HttpResponseMessage response = await client.GetAsync(path);

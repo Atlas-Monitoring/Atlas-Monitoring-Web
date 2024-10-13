@@ -113,7 +113,7 @@
     <value>OS Version</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>UserName</value>
+    <value>Username</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
     <value>Serial Number</value>
@@ -354,5 +354,38 @@
   </data>
   <data name="DeletetionMessageDevice" xml:space="preserve">
     <value>Are you sure you want to delete this device ?</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Authorized</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Any ressource at this adress</value>
+  </data>
+  <data name="Msg_Authentification_Failed" xml:space="preserve">
+    <value>Authentification failed</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="MsgPasswordUpdated" xml:space="preserve">
+    <value>Password updated</value>
+  </data>
+  <data name="Msg_Password_Dont_Match" xml:space="preserve">
+    <value>Password don't match !</value>
+  </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Users Management</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log out</value>
   </data>
 </root>

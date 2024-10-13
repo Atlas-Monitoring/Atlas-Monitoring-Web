@@ -1,12 +1,17 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using Microsoft.Extensions.Localization
 @using Atlas_Monitoring_Web.Locales
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ProtectedSessionStorage ProtectedSessionStorage
 
 <div class="page">
     <NavMenu />
 
     <main>
         <div class="top-row px-4">
+            <Button Color="ButtonColor.Danger" @onclick="LogOut">@localizer["Logout"]</Button> 
             <CultureSelector />
             <a href="https://www.paulin-buland.fr" target="_blank">@localizer["AboutAuthor"]</a>
         </div>
@@ -25,3 +30,15 @@
 
 <Toasts class="p-3" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
 <Preload LoadingText=@localizer["Loading"] />
+
+@code{
+    private async Task LogOut()
+    {
+        await ProtectedSessionStorage.DeleteAsync("token");
+        await ProtectedSessionStorage.DeleteAsync("username");
+
+        await AuthStateProvider.GetAuthenticationStateAsync();
+
+        NavigationManager.NavigateTo("/login", true);
+    }
+}

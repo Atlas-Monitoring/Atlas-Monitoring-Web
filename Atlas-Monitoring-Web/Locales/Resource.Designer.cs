@@ -160,6 +160,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm password.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Date.
         /// </summary>
         public static string Date {
@@ -412,6 +421,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Log out.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Maintenance.
         /// </summary>
         public static string Maintenance {
@@ -466,6 +493,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Authentification failed.
+        /// </summary>
+        public static string Msg_Authentification_Failed {
+            get {
+                return ResourceManager.GetString("Msg_Authentification_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Device has been added.
         /// </summary>
         public static string Msg_DeviceAdded {
@@ -502,6 +538,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Password don&apos;t match !.
+        /// </summary>
+        public static string Msg_Password_Dont_Match {
+            get {
+                return ResourceManager.GetString("Msg_Password_Dont_Match", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Unable to resolve hostname.
         /// </summary>
         public static string Msg_UnableToResolveHostname {
@@ -516,6 +561,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string MsgDeviceDeleted {
             get {
                 return ResourceManager.GetString("MsgDeviceDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Password updated.
+        /// </summary>
+        public static string MsgPasswordUpdated {
+            get {
+                return ResourceManager.GetString("MsgPasswordUpdated", resourceCulture);
             }
         }
         
@@ -556,6 +610,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Any ressource at this adress.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à OS Version.
         /// </summary>
         public static string OSVersion {
@@ -579,6 +642,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Others {
             get {
                 return ResourceManager.GetString("Others", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -799,6 +871,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Authorized.
+        /// </summary>
+        public static string Unauthorized {
+            get {
+                return ResourceManager.GetString("Unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Undefined.
         /// </summary>
         public static string Undefined {
@@ -808,11 +889,29 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à UserName.
+        ///   Recherche une chaîne localisée semblable à Update password.
+        /// </summary>
+        public static string UpdatePassword {
+            get {
+                return ResourceManager.GetString("UpdatePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Username.
         /// </summary>
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Users Management.
+        /// </summary>
+        public static string UsersManagement {
+            get {
+                return ResourceManager.GetString("UsersManagement", resourceCulture);
             }
         }
         

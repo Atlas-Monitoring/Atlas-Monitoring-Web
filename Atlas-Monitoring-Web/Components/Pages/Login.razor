@@ -1,0 +1,140 @@
+﻿@page "/login"
+@using Atlas_Monitoring_Web.Components.Layout
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Serilog
+@layout EmptyLayout
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject IConfiguration Configuration
+@inject IUserRepository _userRepository
+
+<div style="width: 450px; display: block; margin: auto">
+    <h3 style="text-align: center; margin-bottom: 10px">@localizer["Login"]</h3>
+
+    <label>@localizer["UserName"]</label>
+    <InputText @bind-Value="authUser.UserName" DisplayName="Username" class="form-control"/>
+
+    <label>@localizer["Password"]</label>
+    <InputText @bind-Value="authUser.Password" DisplayName="Password" @onkeyup="EnterKey" type="password" class="form-control" />
+
+    <Button @ref="loginButton" Color="ButtonColor.Primary" @onclick="TryAuthentification" Style="display: block; margin: auto; margin-top: 10px">@localizer["Login"]</Button>
+</div>
+    
+
+@code {
+    #region Private
+    private AuthUserViewModel authUser = new();
+    private Button loginButton = default!;
+    #endregion
+
+    #region Constructor
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            PreloadService.Show();
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task EnterKey(KeyboardEventArgs e)
+    {
+        if (!loginButton.Loading)
+        {
+            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            {
+                await TryAuthentification();
+            }
+        }        
+    }
+
+    private async Task TryAuthentification()
+    {
+        try
+        {
+            loginButton.ShowLoading($"{localizer["Login"]}...");
+            await Task.Delay(1);
+
+            string token = await _userRepository.AuthUser(authUser);
+
+            await ProtectedSessionStorage.SetAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (CustomMessageException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = localizer[ex.Message],
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(localizer[ex.Message]);
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            loginButton.HideLoading();
+        }
+    }
+    #endregion
+}

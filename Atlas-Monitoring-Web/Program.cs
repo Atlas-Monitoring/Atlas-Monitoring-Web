@@ -4,6 +4,9 @@ using Atlas_Monitoring_Web.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
 using Atlas_Monitoring_Web.Core.Models.Internal;
+using Atlas_Monitoring_Web.Services;
+using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +34,7 @@ builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
 builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 builder.Services.AddScoped<IDeviceDataLayer, DeviceDataLayer>();
 builder.Services.AddScoped<IDeviceSoftwareInstalledDataLayer, DeviceSoftwareInstalledDataLayer>();
+builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
@@ -39,6 +43,16 @@ builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceSoftwareInstalledRepository, DeviceSoftwareInstalledRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//Add HTTP Client
+builder.Services.AddScoped(sp => new HttpClient());
+
+//Add Custom Authentification
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddBlazoredSessionStorage();
 
 //Add Configuration
 if (builder.Environment.IsDevelopment())
