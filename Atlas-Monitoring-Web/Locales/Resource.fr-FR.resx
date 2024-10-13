@@ -408,4 +408,7 @@
   <data name="Logout" xml:space="preserve">
     <value>Déconnexion</value>
   </data>
+  <data name="NumberOfLogicalProcessors" xml:space="preserve">
+    <value>Nombre de processeur logique</value>
+  </data>
 </root>

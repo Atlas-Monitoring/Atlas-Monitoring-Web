@@ -619,6 +619,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Number of Logical Processors.
+        /// </summary>
+        public static string NumberOfLogicalProcessors {
+            get {
+                return ResourceManager.GetString("NumberOfLogicalProcessors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à OS Version.
         /// </summary>
         public static string OSVersion {

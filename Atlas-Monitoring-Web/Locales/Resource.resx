@@ -388,4 +388,7 @@
   <data name="Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
+  <data name="NumberOfLogicalProcessors" xml:space="preserve">
+    <value>Number of Logical Processors</value>
+  </data>
 </root>
