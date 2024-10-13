@@ -412,4 +412,43 @@
   <data name="DeviceStatus_EndOfLife" xml:space="preserve">
     <value>End Of Life</value>
   </data>
+  <data name="NameOfEntities" xml:space="preserve">
+    <value>Name of enities</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Msg_Property_Cant_Be_Empty" xml:space="preserve">
+    <value>The property '{0}' can't be empty</value>
+  </data>
+  <data name="AddEntity" xml:space="preserve">
+    <value>Add Entity</value>
+  </data>
+  <data name="DeleteEntity" xml:space="preserve">
+    <value>Delete entity</value>
+  </data>
+  <data name="QuestionEntityDeletion" xml:space="preserve">
+    <value>Are you sure you want to delete this entity ?</value>
+  </data>
+  <data name="MsgEntityDeleted" xml:space="preserve">
+    <value>Entity deleted</value>
+  </data>
+  <data name="Entity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="EntityManagement" xml:space="preserve">
+    <value>Entity Management</value>
+  </data>
+  <data name="MsgEntityDeletedSuccess" xml:space="preserve">
+    <value>Entity deleted successfully</value>
+  </data>
+  <data name="Msg_Entity_Assigned" xml:space="preserve">
+    <value>Entity assigned</value>
+  </data>
+  <data name="SelectAnOption" xml:space="preserve">
+    <value>Select an option</value>
+  </data>
+  <data name="Msg_Entity_Unassigned" xml:space="preserve">
+    <value>Entity unassigned</value>
+  </data>
 </root>

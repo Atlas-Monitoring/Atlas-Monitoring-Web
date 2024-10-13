@@ -1,0 +1,82 @@
+﻿@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Serilog
+@inject IEntityRepository _entityRepository
+
+<label>@localizer["Name"]</label>
+<InputText @bind-Value="newEntity.Name" DisplayName="@localizer["Name"]" maxlength="70" class="form-control" @onkeyup="EnterKey"/>
+
+<Button @ref="addButton" Color="ButtonColor.Primary" style="display: block; margin: auto; margin-top: 10px" @onclick="AddNewEntity">@localizer["Save"]</Button>
+
+@code {
+    #region Properties
+    [Parameter] public EventCallback<bool> CloseModal { get; set; }
+    private EntityWriteViewModel newEntity = new();
+    private Button addButton = default!;
+    #endregion
+
+    #region Private Methods
+    private async Task AddNewEntity()
+    {
+        try
+        {
+            addButton.ShowLoading(localizer["Saving"]);
+            await Task.Delay(1);
+
+            if (newEntity.Name != string.Empty)
+            {
+                await _entityRepository.CreateNewEntity(newEntity);
+
+                newEntity = new();
+
+                await ButtonCloseModal();
+            }
+            else
+            {
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Warning"],
+                        Message = string.Format(localizer["Msg_Property_Cant_Be_Empty"], localizer["Name"]),
+                        IconName = IconName.ExclamationDiamondFill,
+                        Type = ToastType.Danger
+                    });
+
+                Log.Warning(string.Format(localizer["Msg_Property_Cant_Be_Empty"], localizer["Name"]));
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            addButton.HideLoading();
+        }
+
+    }
+
+    private async Task ButtonCloseModal()
+    {
+        await CloseModal.InvokeAsync();
+    }
+
+    private async Task EnterKey(KeyboardEventArgs e)
+    {
+        if (!addButton.Loading)
+        {
+            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            {
+                await AddNewEntity();
+            }
+        }
+    }
+    #endregion
+}

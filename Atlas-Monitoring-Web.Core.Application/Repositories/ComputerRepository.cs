@@ -36,6 +36,11 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
         {
             await _computerDataLayer.UpdateComputerStatus(id, deviceStatus);
         }
+
+        public async Task UpdateComputerEntity(Guid computerId, Guid entityId)
+        {
+            await _computerDataLayer.UpdateComputerEntity(computerId, entityId);
+        }
         #endregion
 
         #region Delete

@@ -11,6 +11,7 @@
 @inject PreloadService PreloadService
 @inject NavigationManager NavigationManager
 @inject IComputerRepository _computerRepository
+@inject IEntityRepository _entityRepository
 
 <Grid @ref="grid" TItem="ComputerReadViewModel"
       Class="table table-hover table-bordered table-striped"
@@ -22,6 +23,9 @@
       Responsive="true">
 
     <GridColumns>
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["ComputerName"] PropertyName="Name" SortKeySelector="item => item.Name">
+            @context.Name
+        </GridColumn>
         <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["Status"] PropertyName="DeviceStatus" SortKeySelector="item => item.DeviceStatus">
             <select @onchange="(e => UpdateComputerStatus(context.Id, (string)e.Value))" class="form-control">
                 <option value="@DeviceStatus.New" selected="@(context.DeviceStatus == DeviceStatus.New)">@localizer[$"DeviceStatus_{DeviceStatus.New}"]</option>
@@ -31,8 +35,14 @@
                 <option value="@DeviceStatus.EndOfLife" selected="@(context.DeviceStatus == DeviceStatus.EndOfLife)">@localizer[$"DeviceStatus_{DeviceStatus.EndOfLife}"]</option>
             </select>
         </GridColumn>
-        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["ComputerName"] PropertyName="Name" SortKeySelector="item => item.Name">
-            @context.Name
+        <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["Entity"] PropertyName="EntityName" SortKeySelector="item => item.EntityName">
+            <select @onchange="(e => UpdateComputerEntity(context.Id, (string)e.Value))" class="form-control">
+                @foreach (EntityReadViewModel entity in listOfEntities)
+                {
+                    <option value="" selected="@(context.EntityId is null)">@localizer["SelectAnOption"]</option>
+                    <option value="@entity.EntityId" selected="@(context.EntityName == entity.Name)">@entity.Name</option>
+                }
+            </select>
         </GridColumn>
         <GridColumn TItem="ComputerReadViewModel" HeaderText="Ip" PropertyName="Designation" SortKeySelector="item => item.Ip">
             @context.Ip
@@ -66,6 +76,7 @@
 @code {
     #region Properties
     private List<ComputerReadViewModel> listComputers { get; set; } = new();
+    private List<EntityReadViewModel> listOfEntities { get; set; } = new();
     private Grid<ComputerReadViewModel> grid = default!;
     private Modal modal = default!;
     #endregion
@@ -118,6 +129,7 @@
     private async Task LoadData()
     {
         listComputers = await _computerRepository.GetAllComputers();
+        listOfEntities = await _entityRepository.GetListOfEntity();
     }
 
     private async Task<GridDataProviderResult<ComputerReadViewModel>> ComputersDataProvider(GridDataProviderRequest<ComputerReadViewModel> request)
@@ -177,6 +189,61 @@
                     IconName = IconName.Check2Circle,
                     Type = ToastType.Success
                 });
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+
+    private async Task UpdateComputerEntity(Guid computerId, string entityId)
+    {
+        try
+        {
+            if (entityId != string.Empty)
+            {
+                await _computerRepository.UpdateComputerEntity(computerId, Guid.Parse(entityId));
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["Msg_Entity_Assigned"],
+                        IconName = IconName.Check2Circle,
+                        Type = ToastType.Success
+                    });
+            }
+            else
+            {
+                await _computerRepository.UpdateComputerEntity(computerId, Guid.Empty);
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["Msg_Entity_Unassigned"],
+                        IconName = IconName.Check2Circle,
+                        Type = ToastType.Success
+                    });
+            }
         }
         catch (CustomDataLayerException ex)
         {

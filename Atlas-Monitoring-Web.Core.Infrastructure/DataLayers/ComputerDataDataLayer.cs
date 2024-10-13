@@ -5,7 +5,6 @@ using System.Net.Http.Json;
 using System.Net;
 using Atlas_Monitoring_Web.Core.Models.Internal;
 using Microsoft.Extensions.Options;
-using static System.Net.WebRequestMethods;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
