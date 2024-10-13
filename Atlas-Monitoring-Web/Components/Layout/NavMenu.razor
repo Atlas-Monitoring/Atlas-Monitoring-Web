@@ -29,6 +29,9 @@
             new NavItem { Id = "22", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="20"},
             // new NavItem { Id = "23", Href = "/Servers", IconName = IconName.Pc, Text = localizer["Server"], ParentId="20"},
             new NavItem { Id = "24", Href = "/Others", IconName = IconName.ThreeDots, Text = localizer["Others"], ParentId="20"},
+
+            new NavItem { Id = "30", Text = localizer["UsersManagement"]},
+            new NavItem { Id = "31", Href = "/User/UpdatePassword", IconName = IconName.LockFill, Text = localizer["UpdatePassword"], ParentId="30"},
         };
 
         return navItems;

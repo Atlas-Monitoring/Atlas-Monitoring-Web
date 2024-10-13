@@ -5,6 +5,7 @@ using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
@@ -13,14 +14,15 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
     {
         #region Properties
         private readonly IOptions<AppConfig> _appConfig;
+        private readonly HttpClient _httpClient;
         #endregion
 
         #region Constructor
-        public ComputerDataLayer(IOptions<AppConfig> appConfig)
+        public ComputerDataLayer(IOptions<AppConfig> appConfig, HttpClient httpClient)
         {
             _appConfig = appConfig;
-            Log.Information($"API URL = {_appConfig.Value.URLApi}");
-        }        
+            _httpClient = httpClient;
+        }
         #endregion
 
         #region Public Methods
@@ -28,6 +30,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<List<ComputerReadViewModel>> GetAllComputers()
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Computers/GetAll";
 
             HttpResponseMessage response = await client.GetAsync(path);
@@ -49,6 +52,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task<ComputerReadViewModel> GetOneComputer(Guid idComputer)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Computers/{idComputer.ToString()}";
 
             HttpResponseMessage response = await client.GetAsync(path);
@@ -72,6 +76,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         public async Task DeleteComputer(Guid idComputer)
         {
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
             string path = $"{_appConfig.Value.URLApi}/Computers/{idComputer.ToString()}";
 
             HttpResponseMessage response = await client.DeleteAsync(path);

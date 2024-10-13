@@ -375,4 +375,37 @@
   <data name="DeletetionMessageDevice" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir supprimer cet appareil ?</value>
   </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Non autorisé</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Aucune ressource à cette adresse</value>
+  </data>
+  <data name="Msg_Authentification_Failed" xml:space="preserve">
+    <value>L'authentification a échouée</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirmer le mot de passe</value>
+  </data>
+  <data name="MsgPasswordUpdated" xml:space="preserve">
+    <value>Mot de passe mis à jour</value>
+  </data>
+  <data name="Msg_Password_Dont_Match" xml:space="preserve">
+    <value>Les mots de passe ne correspondent pas !</value>
+  </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Modifier mot de passe</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Gestion utilisateur</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
 </root>
