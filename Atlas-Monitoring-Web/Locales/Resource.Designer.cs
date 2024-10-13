@@ -88,6 +88,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add Entity.
+        /// </summary>
+        public static string AddEntity {
+            get {
+                return ResourceManager.GetString("AddEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Add a new device.
         /// </summary>
         public static string AddNewDevice {
@@ -205,6 +214,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete entity.
+        /// </summary>
+        public static string DeleteEntity {
+            get {
+                return ResourceManager.GetString("DeleteEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this device ?.
         /// </summary>
         public static string DeletetionMessageDevice {
@@ -259,6 +277,51 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à End Of Life.
+        /// </summary>
+        public static string DeviceStatus_EndOfLife {
+            get {
+                return ResourceManager.GetString("DeviceStatus_EndOfLife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à In Production.
+        /// </summary>
+        public static string DeviceStatus_InProduction {
+            get {
+                return ResourceManager.GetString("DeviceStatus_InProduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Maintenance.
+        /// </summary>
+        public static string DeviceStatus_Maintenance {
+            get {
+                return ResourceManager.GetString("DeviceStatus_Maintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New.
+        /// </summary>
+        public static string DeviceStatus_New {
+            get {
+                return ResourceManager.GetString("DeviceStatus_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ready.
+        /// </summary>
+        public static string DeviceStatus_Ready {
+            get {
+                return ResourceManager.GetString("DeviceStatus_Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Device type.
         /// </summary>
         public static string DeviceType {
@@ -300,6 +363,24 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string EndOfLife {
             get {
                 return ResourceManager.GetString("EndOfLife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity.
+        /// </summary>
+        public static string Entity {
+            get {
+                return ResourceManager.GetString("Entity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity Management.
+        /// </summary>
+        public static string EntityManagement {
+            get {
+                return ResourceManager.GetString("EntityManagement", resourceCulture);
             }
         }
         
@@ -502,6 +583,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Status of device updated.
+        /// </summary>
+        public static string Msg_Device_Status_Updated {
+            get {
+                return ResourceManager.GetString("Msg_Device_Status_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Device has been added.
         /// </summary>
         public static string Msg_DeviceAdded {
@@ -516,6 +606,24 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Msg_DeviceUpdated {
             get {
                 return ResourceManager.GetString("Msg_DeviceUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity assigned.
+        /// </summary>
+        public static string Msg_Entity_Assigned {
+            get {
+                return ResourceManager.GetString("Msg_Entity_Assigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity unassigned.
+        /// </summary>
+        public static string Msg_Entity_Unassigned {
+            get {
+                return ResourceManager.GetString("Msg_Entity_Unassigned", resourceCulture);
             }
         }
         
@@ -547,6 +655,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à The property &apos;{0}&apos; can&apos;t be empty.
+        /// </summary>
+        public static string Msg_Property_Cant_Be_Empty {
+            get {
+                return ResourceManager.GetString("Msg_Property_Cant_Be_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Unable to resolve hostname.
         /// </summary>
         public static string Msg_UnableToResolveHostname {
@@ -565,6 +682,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity deleted.
+        /// </summary>
+        public static string MsgEntityDeleted {
+            get {
+                return ResourceManager.GetString("MsgEntityDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entity deleted successfully.
+        /// </summary>
+        public static string MsgEntityDeletedSuccess {
+            get {
+                return ResourceManager.GetString("MsgEntityDeletedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Password updated.
         /// </summary>
         public static string MsgPasswordUpdated {
@@ -579,6 +714,24 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string MsgThisActionCantBeRollback {
             get {
                 return ResourceManager.GetString("MsgThisActionCantBeRollback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Name of enities.
+        /// </summary>
+        public static string NameOfEntities {
+            get {
+                return ResourceManager.GetString("NameOfEntities", resourceCulture);
             }
         }
         
@@ -615,6 +768,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Number of Logical Processors.
+        /// </summary>
+        public static string NumberOfLogicalProcessors {
+            get {
+                return ResourceManager.GetString("NumberOfLogicalProcessors", resourceCulture);
             }
         }
         
@@ -727,6 +889,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this entity ?.
+        /// </summary>
+        public static string QuestionEntityDeletion {
+            get {
+                return ResourceManager.GetString("QuestionEntityDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à RAM Installed.
         /// </summary>
         public static string RamInstalled {
@@ -795,6 +966,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Second {
             get {
                 return ResourceManager.GetString("Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select an option.
+        /// </summary>
+        public static string SelectAnOption {
+            get {
+                return ResourceManager.GetString("SelectAnOption", resourceCulture);
             }
         }
         
@@ -921,6 +1101,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version of reporteur.
+        /// </summary>
+        public static string VersionOfReporter {
+            get {
+                return ResourceManager.GetString("VersionOfReporter", resourceCulture);
             }
         }
         

@@ -1,5 +1,6 @@
 ﻿using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
+using Atlas_Monitoring_Web.Core.Models.Internal;
 using Atlas_Monitoring_Web.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring_Web.Core.Application.Repositories
@@ -27,6 +28,18 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
         public async Task<ComputerReadViewModel> GetOneComputer(Guid idComputer)
         {
             return await _computerDataLayer.GetOneComputer(idComputer);
+        }
+        #endregion
+
+        #region Update
+        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            await _computerDataLayer.UpdateComputerStatus(id, deviceStatus);
+        }
+
+        public async Task UpdateComputerEntity(Guid computerId, Guid entityId)
+        {
+            await _computerDataLayer.UpdateComputerEntity(computerId, entityId);
         }
         #endregion
 

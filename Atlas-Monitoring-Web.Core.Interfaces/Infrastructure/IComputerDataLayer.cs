@@ -1,4 +1,5 @@
-﻿using Atlas_Monitoring_Web.Core.Models.ViewModels;
+﻿using Atlas_Monitoring_Web.Core.Models.Internal;
+using Atlas_Monitoring_Web.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
 {
@@ -24,7 +25,19 @@ namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
         #endregion
 
         #region Update
+        /// <summary>
+        /// Update status of computer
+        /// </summary>
+        /// <param name="id">Id of computer</param>
+        /// <param name="deviceStatus">Status of the device</param>
+        public Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus);
 
+        /// <summary>
+        /// Update entity of computer
+        /// </summary>
+        /// <param name="computerId">Id of computer</param>
+        /// <param name="entityId">Id of entity</param>
+        public Task UpdateComputerEntity(Guid computerId, Guid entityId);
         #endregion
 
         #region Delete

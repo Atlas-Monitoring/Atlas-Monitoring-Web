@@ -3,9 +3,7 @@ using Atlas_Monitoring_Web.Core.Models.Internal;
 using Atlas_Monitoring_Web.Core.Models.ViewModels;
 using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
-using Serilog;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
@@ -66,6 +64,42 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
                 throw new CustomDataLayerException($"No computer found with id '{idComputer.ToString()}'");
             }
             else
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
+        #endregion
+
+        #region Update
+        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
+            string path = $"{_appConfig.Value.URLApi}/Computers/{id.ToString()}/{deviceStatus}";
+
+            HttpResponseMessage response = await client.PutAsync(path, null);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No computer found with id '{id.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
+
+        public async Task UpdateComputerEntity(Guid computerId, Guid entityId)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
+            string path = $"{_appConfig.Value.URLApi}/Computers/AssignEntity/{computerId.ToString()}/{entityId.ToString()}";
+
+            HttpResponseMessage response = await client.PutAsync(path, null);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No computer found with id '{computerId.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
             }

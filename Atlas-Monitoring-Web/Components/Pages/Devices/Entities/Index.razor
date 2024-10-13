@@ -1,0 +1,170 @@
+﻿@page "/entities"
+@using Atlas_Monitoring_Web.Components.Modals.Entities
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@using Serilog
+@inject IEntityRepository _entityRepository
+
+<Button @onclick="ModalAddEntity" Color="ButtonColor.Primary" TooltipTitle="@localizer["AddEntity"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.PlusCircleFill" />@localizer["AddEntity"]</Button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@localizer["NameOfEntities"]</th>
+            <th>@localizer["Actions"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (EntityReadViewModel entity in listOfEntities)
+        {
+            <tr>
+                <td>@entity.Name</td>
+                <td><Button @onclick="() => DeleteEntity(entity)" Color="ButtonColor.Danger" TooltipTitle="@localizer["DeleteEntity"]" TooltipPlacement="TooltipPlacement.Top"><Icon Name="IconName.Trash3Fill" /></Button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<Modal @ref="modal" Size="ModalSize.Small" UseStaticBackdrop="true"></Modal>
+<ConfirmDialog @ref="confirmDialog" />
+
+@code {
+    #region Properties
+    private List<EntityReadViewModel> listOfEntities = new();
+    private Modal modal = default!;
+    private ConfirmDialog confirmDialog = default!;
+    #endregion
+
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                await LoadData();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task LoadData()
+    {
+        listOfEntities = await _entityRepository.GetListOfEntity();
+
+        StateHasChanged();
+    }
+
+    private async Task ModalAddEntity()
+    {
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("CloseModal", EventCallback.Factory.Create<bool>(this, CloseModal));
+
+        await modal.ShowAsync<MAddEntity>(title: localizer["AddEntity"], parameters: parameters);
+    }
+
+    private async Task CloseModal(bool reloadGrid)
+    {
+        await LoadData();
+        await modal.HideAsync();
+
+        ToastService.Notify(new()
+            {
+                Title = localizer["Success"],
+                Message = localizer["MsgEntityDeletedSuccess"],
+                IconName = IconName.Check,
+                Type = ToastType.Success
+            });
+    }
+
+    private async Task DeleteEntity(EntityReadViewModel entity)
+    {
+        try
+        {
+            var options = new ConfirmDialogOptions
+                {
+                    YesButtonText = localizer["Confirm"],
+                    YesButtonColor = ButtonColor.Success,
+                    NoButtonText = localizer["Cancel"],
+                    NoButtonColor = ButtonColor.Danger
+                };
+
+            var confirmation = await confirmDialog.ShowAsync(
+            title: localizer["QuestionEntityDeletion"],
+            message1: localizer["MsgThisActionCantBeRollback"],
+            confirmDialogOptions: options);
+
+            if (confirmation)
+            {
+                await _entityRepository.DeleteOneEntity(entity.EntityId);
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["MsgEntityDeleted"],
+                        IconName = IconName.Check,
+                        Type = ToastType.Success
+                    });
+
+                await LoadData();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = @localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+    #endregion
+}

@@ -32,6 +32,9 @@
 
             new NavItem { Id = "30", Text = localizer["UsersManagement"]},
             new NavItem { Id = "31", Href = "/User/UpdatePassword", IconName = IconName.LockFill, Text = localizer["UpdatePassword"], ParentId="30"},
+
+            new NavItem { Id = "40", Text = localizer["EntityManagement"]},
+            new NavItem { Id = "41", Href = "/entities", IconName = IconName.Building, Text = localizer["Entity"], ParentId="40"},
         };
 
         return navItems;

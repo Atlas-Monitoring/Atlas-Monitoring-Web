@@ -5,7 +5,6 @@ using Atlas_Monitoring_Web.CustomException;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Net;
-using System.Net.Http;
 
 namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 {
