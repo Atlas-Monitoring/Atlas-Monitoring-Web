@@ -35,7 +35,15 @@
                         </tr>
                         <tr>
                             <th>@localizer["Status"]</th>
-                            <td></td>
+                            <td>
+                                <select @onchange="(e => UpdateComputerStatus(computerReadViewModel.Id, (string)e.Value))" class="form-control">
+                                    <option value="@DeviceStatus.New" selected="@(computerReadViewModel.DeviceStatus == DeviceStatus.New)">@localizer[$"DeviceStatus_{DeviceStatus.New}"]</option>
+                                    <option value="@DeviceStatus.Ready" selected="@(computerReadViewModel.DeviceStatus == DeviceStatus.Ready)">@localizer[$"DeviceStatus_{DeviceStatus.Ready}"]</option>
+                                    <option value="@DeviceStatus.InProduction" selected="@(computerReadViewModel.DeviceStatus == DeviceStatus.InProduction)">@localizer[$"DeviceStatus_{DeviceStatus.InProduction}"]</option>
+                                    <option value="@DeviceStatus.Maintenance" selected="@(computerReadViewModel.DeviceStatus == DeviceStatus.Maintenance)">@localizer[$"DeviceStatus_{DeviceStatus.Maintenance}"]</option>
+                                    <option value="@DeviceStatus.EndOfLife" selected="@(computerReadViewModel.DeviceStatus == DeviceStatus.EndOfLife)">@localizer[$"DeviceStatus_{DeviceStatus.EndOfLife}"]</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <th>@localizer["ComputerName"]</th>
@@ -339,6 +347,46 @@
         {
             await _computerRepository.DeleteComputer(Guid.Parse(idComuterString));
             NavigationManager.NavigateTo("/Computers", true);
+        }
+    }
+
+    private async Task UpdateComputerStatus(Guid computerId, string deviceStatus)
+    {
+        try
+        {
+            await _computerRepository.UpdateComputerStatus(computerId, (DeviceStatus)Enum.Parse(typeof(DeviceStatus), deviceStatus));
+
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Success"],
+                    Message = localizer["Msg_Device_Status_Updated"],
+                    IconName = IconName.Check2Circle,
+                    Type = ToastType.Success
+                });
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
         }
     }
     #endregion

@@ -394,4 +394,22 @@
   <data name="VersionOfReporter" xml:space="preserve">
     <value>Version of reporteur</value>
   </data>
+  <data name="Msg_Device_Status_Updated" xml:space="preserve">
+    <value>Status of device updated</value>
+  </data>
+  <data name="DeviceStatus_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="DeviceStatus_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="DeviceStatus_InProduction" xml:space="preserve">
+    <value>In Production</value>
+  </data>
+  <data name="DeviceStatus_Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="DeviceStatus_EndOfLife" xml:space="preserve">
+    <value>End Of Life</value>
+  </data>
 </root>

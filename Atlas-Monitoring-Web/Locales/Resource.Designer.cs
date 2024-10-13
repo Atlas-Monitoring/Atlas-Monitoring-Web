@@ -259,6 +259,51 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à End Of Life.
+        /// </summary>
+        public static string DeviceStatus_EndOfLife {
+            get {
+                return ResourceManager.GetString("DeviceStatus_EndOfLife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à In Production.
+        /// </summary>
+        public static string DeviceStatus_InProduction {
+            get {
+                return ResourceManager.GetString("DeviceStatus_InProduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Maintenance.
+        /// </summary>
+        public static string DeviceStatus_Maintenance {
+            get {
+                return ResourceManager.GetString("DeviceStatus_Maintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New.
+        /// </summary>
+        public static string DeviceStatus_New {
+            get {
+                return ResourceManager.GetString("DeviceStatus_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ready.
+        /// </summary>
+        public static string DeviceStatus_Ready {
+            get {
+                return ResourceManager.GetString("DeviceStatus_Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Device type.
         /// </summary>
         public static string DeviceType {
@@ -498,6 +543,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Msg_Authentification_Failed {
             get {
                 return ResourceManager.GetString("Msg_Authentification_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Status of device updated.
+        /// </summary>
+        public static string Msg_Device_Status_Updated {
+            get {
+                return ResourceManager.GetString("Msg_Device_Status_Updated", resourceCulture);
             }
         }
         

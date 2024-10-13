@@ -72,6 +72,25 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         }
         #endregion
 
+        #region Update
+        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
+            string path = $"{_appConfig.Value.URLApi}/Computers/{id.ToString()}/{deviceStatus}";
+
+            HttpResponseMessage response = await client.PutAsync(path, null);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No computer found with id '{id.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
+        #endregion
+
         #region Delete
         public async Task DeleteComputer(Guid idComputer)
         {
@@ -88,7 +107,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             {
                 throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
             }
-        }
+        }        
         #endregion
         #endregion
     }
