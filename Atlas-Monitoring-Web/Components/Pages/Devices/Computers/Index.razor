@@ -37,9 +37,10 @@
         </GridColumn>
         <GridColumn TItem="ComputerReadViewModel" HeaderText=@localizer["Entity"] PropertyName="EntityName" SortKeySelector="item => item.EntityName">
             <select @onchange="(e => UpdateComputerEntity(context.Id, (string)e.Value))" class="form-control">
+                <option value="" selected="@(context.EntityId is null)">@localizer["SelectAnOption"]</option>
+
                 @foreach (EntityReadViewModel entity in listOfEntities)
                 {
-                    <option value="" selected="@(context.EntityId is null)">@localizer["SelectAnOption"]</option>
                     <option value="@entity.EntityId" selected="@(context.EntityName == entity.Name)">@entity.Name</option>
                 }
             </select>
