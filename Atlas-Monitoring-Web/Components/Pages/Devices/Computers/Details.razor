@@ -14,6 +14,7 @@
 @inject IComputerHardDriveRepository _computerHardDriveRepository
 @inject IComputerPartsRepository _computerPartsRepository
 @inject IDeviceSoftwareInstalledRepository _deviceSoftwareInstalledRepository
+@inject IDeviceHistoryRepository _deviceHistoryRepository
 
 <div class="d-grid justify-content-md-end" style="margin-bottom: 20px">
     <Button Color="ButtonColor.Danger" @onclick="DeleteComputer">@localizer["DeleteDevice"]</Button>
@@ -191,12 +192,12 @@
         <Content>
             @if (deviceHistoryViewModel != null && deviceHistoryViewModel.Any())
             {
-                <table>
+                <table class="table table-stripped">
                     <tbody>
-                        @foreach (DeviceHistoryViewModel data in deviceHistoryViewModel.OrderByDescending(x => x.DateAdd))
+                        @foreach (DeviceHistoryReadViewModel data in deviceHistoryViewModel.OrderByDescending(x => x.DateAdd))
                         {
                             <tr>
-                                <td>@data.DateAdd</td>
+                                <td>[@data.DateAdd]</td>
                                 <td>@data.Message</td>
                             </tr>
                         }
@@ -220,7 +221,7 @@
     private ComputerReadViewModel computerReadViewModel;
     private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
     private List<ComputerDataViewModel> computerDataViewModel;
-    private List<DeviceHistoryViewModel> deviceHistoryViewModel;
+    private List<DeviceHistoryReadViewModel> deviceHistoryViewModel;
     private List<DevicePartsReadViewModel> computerPartsViewModel;
     private List<DeviceSoftwareInstalledReadViewModel> computerSoftwareList;
 
@@ -283,6 +284,7 @@
         computerDataViewModel = await _computerDataRepository.GetAllComputerDataOfAComputer(Guid.Parse(idComuterString), DateTime.Now.AddDays(-1));
         computerPartsViewModel = await _computerPartsRepository.GetAllComputerPartByComputerId(Guid.Parse(idComuterString));
         computerSoftwareList = await _deviceSoftwareInstalledRepository.ListOfSoftwareOnDevice(Guid.Parse(idComuterString));
+        deviceHistoryViewModel = await _deviceHistoryRepository.GetHistoryOfADevice(Guid.Parse(idComuterString));
 
         if (computerDataViewModel.Any())
         {
