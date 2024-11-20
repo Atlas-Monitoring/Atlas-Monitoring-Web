@@ -15,6 +15,7 @@
 @inject IComputerPartsRepository _computerPartsRepository
 @inject IDeviceSoftwareInstalledRepository _deviceSoftwareInstalledRepository
 @inject IDeviceHistoryRepository _deviceHistoryRepository
+@inject IEntityRepository _entityRepository
 
 <div class="d-grid justify-content-md-end" style="margin-bottom: 20px">
     <Button Color="ButtonColor.Danger" @onclick="DeleteComputer">@localizer["DeleteDevice"]</Button>
@@ -49,6 +50,19 @@
                         <tr>
                             <th>@localizer["ComputerName"]</th>
                             <td>@computerReadViewModel.Name</td>
+                        </tr>
+                        <tr>
+                            <th>@localizer["Entity"]</th>
+                            <td>
+                                <select @onchange="(e => UpdateComputerEntity(computerReadViewModel.Id, (string)e.Value))" class="form-control">
+                                    <option value="" selected="@(computerReadViewModel.EntityId is null)">@localizer["SelectAnOption"]</option>
+
+                                    @foreach (EntityReadViewModel entity in listOfEntities)
+                                    {
+                                        <option value="@entity.EntityId" selected="@(computerReadViewModel.EntityName == entity.Name)">@entity.Name</option>
+                                    }
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <th>Ip</th>
@@ -225,6 +239,8 @@
     private List<DevicePartsReadViewModel> computerPartsViewModel;
     private List<DeviceSoftwareInstalledReadViewModel> computerSoftwareList;
 
+    private List<EntityReadViewModel> listOfEntities { get; set; } = new();
+
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();
     private string versionOfReporter = string.Empty;
@@ -285,6 +301,8 @@
         computerPartsViewModel = await _computerPartsRepository.GetAllComputerPartByComputerId(Guid.Parse(idComuterString));
         computerSoftwareList = await _deviceSoftwareInstalledRepository.ListOfSoftwareOnDevice(Guid.Parse(idComuterString));
         deviceHistoryViewModel = await _deviceHistoryRepository.GetHistoryOfADevice(Guid.Parse(idComuterString));
+        listOfEntities = await _entityRepository.GetListOfEntity();
+
 
         if (computerDataViewModel.Any())
         {
@@ -365,6 +383,61 @@
                     IconName = IconName.Check2Circle,
                     Type = ToastType.Success
                 });
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+
+    private async Task UpdateComputerEntity(Guid computerId, string entityId)
+    {
+        try
+        {
+            if (entityId != string.Empty)
+            {
+                await _computerRepository.UpdateComputerEntity(computerId, Guid.Parse(entityId));
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["Msg_Entity_Assigned"],
+                        IconName = IconName.Check2Circle,
+                        Type = ToastType.Success
+                    });
+            }
+            else
+            {
+                await _computerRepository.UpdateComputerEntity(computerId, Guid.Empty);
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["Msg_Entity_Unassigned"],
+                        IconName = IconName.Check2Circle,
+                        Type = ToastType.Success
+                    });
+            }
         }
         catch (CustomDataLayerException ex)
         {
