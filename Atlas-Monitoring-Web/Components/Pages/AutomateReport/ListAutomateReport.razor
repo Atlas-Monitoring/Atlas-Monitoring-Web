@@ -1,0 +1,86 @@
+﻿@page "/AutomateReport"
+@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Atlas_Monitoring_Web.CustomException
+@using Serilog
+@inject IAutomateReportRepository _automateReportRepository
+
+<h3>@localizer["7DaysReports"] :</h3>
+
+@foreach (AutomateReportReadViewModel automateReport in ListAutomateReportReadViewModels)
+{
+    <div class="automateReportLine automateReportLine_@automateReport.Status">
+        <div class="automateReportLineBlock">
+            @localizer["Software"] : @automateReport.AppName
+        </div>
+
+        <div class="automateReportLineBlock">
+            @localizer["Entity"] : @automateReport.EntityName
+        </div>
+
+        <div class="automateReportLineBlock">
+            @localizer["ReportDate"] : @automateReport.CreatedAt.ToString("dd-MM-yyyy")
+        </div>
+
+        <div class="automateReportLineBlock" style="max-width: 100px">
+            <Button Color="ButtonColor.Secondary">@localizer["Details"]</Button>
+        </div>
+    </div>
+}
+
+@code {
+    #region Properties
+    private List<AutomateReportReadViewModel> ListAutomateReportReadViewModels = new();
+    #endregion
+
+    #region Constructor
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            PreloadService.Show();
+
+            if (firstRender)
+            {
+                await LoadData();
+                StateHasChanged();
+            }
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    private async Task LoadData()
+    {
+        ListAutomateReportReadViewModels = (await _automateReportRepository.GetReportBetweenDate(DateTime.Now.AddDays(-7), DateTime.Now)).OrderByDescending(item => item.CreatedAt).ToList();
+    }
+    #endregion
+}

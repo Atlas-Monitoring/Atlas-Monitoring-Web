@@ -69,7 +69,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
-            string path = $"{_appConfig.Value.URLApi}/AutomateReport{startDate.ToString("yyyy-MM-dd")}/{endDate.ToString("yyyy-MM-dd")}";
+            string path = $"{_appConfig.Value.URLApi}/AutomateReport/GetBetweenDate/{startDate.ToString("yyyy-MM-dd")}/{endDate.ToString("yyyy-MM-dd")}";
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.StatusCode == HttpStatusCode.OK)

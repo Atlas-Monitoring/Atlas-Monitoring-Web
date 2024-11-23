@@ -451,4 +451,10 @@
   <data name="Msg_Entity_Unassigned" xml:space="preserve">
     <value>Entity unassigned</value>
   </data>
+  <data name="ReportDate" xml:space="preserve">
+    <value>Report date</value>
+  </data>
+  <data name="7DaysReports" xml:space="preserve">
+    <value>Last 7 days reports</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Last 7 days reports.
+        /// </summary>
+        public static string _7DaysReports {
+            get {
+                return ResourceManager.GetString("7DaysReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à About the Author.
         /// </summary>
         public static string AboutAuthor {
@@ -912,6 +921,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Ready {
             get {
                 return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Report date.
+        /// </summary>
+        public static string ReportDate {
+            get {
+                return ResourceManager.GetString("ReportDate", resourceCulture);
             }
         }
         
