@@ -5,11 +5,7 @@ namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
     public interface IAutomateReportDataLayer
     {
         #region Create
-        /// <summary>
-        /// Create a new report
-        /// </summary>
-        /// <param name="newReport">Object AutomateReportWriteViewModel</param>
-        Task CreateNewReport(AutomateReportWriteViewModel newReport);
+
         #endregion
 
         #region Read

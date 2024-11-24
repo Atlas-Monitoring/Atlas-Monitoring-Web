@@ -19,10 +19,7 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
 
         #region Public Methods
         #region Create
-        public async Task CreateNewReport(AutomateReportWriteViewModel newReport)
-        {
-            await _automateReportDataLayer.CreateNewReport(newReport);
-        }
+
         #endregion
 
         #region Read

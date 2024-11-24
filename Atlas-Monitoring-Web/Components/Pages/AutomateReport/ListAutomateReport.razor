@@ -1,9 +1,26 @@
 ﻿@page "/AutomateReport"
+@using Atlas_Monitoring_Web.Components.Modals.AutomateReport
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.ViewModels
 @using Atlas_Monitoring_Web.CustomException
 @using Serilog
 @inject IAutomateReportRepository _automateReportRepository
+
+<div class="automateReportLine" style="margin-bottom: 15px">
+    <div class="automateReportLineBlock pagging5px">
+        <label>@localizer["StartDate"] :</label>
+        <input @bind="StartDate" type="date" class="form-control" />
+    </div>
+
+    <div class="automateReportLineBlock pagging5px">
+        <label>@localizer["EndDate"] :</label>
+        <input @bind="EndDate" type="date" class="form-control" />
+    </div>
+
+    <div class="automateReportLineBlock">
+        <Button Color="ButtonColor.Primary" @onclick="LoadData" Style="margin-top: 18px; margin-left: 15px">@localizer["Refresh"]</Button>
+    </div>
+</div>
 
 <h3>@localizer["7DaysReports"] :</h3>
 
@@ -22,15 +39,23 @@
             @localizer["ReportDate"] : @automateReport.CreatedAt.ToString("dd-MM-yyyy")
         </div>
 
-        <div class="automateReportLineBlock" style="max-width: 100px">
-            <Button Color="ButtonColor.Secondary">@localizer["Details"]</Button>
+        <div class="automateReportLineBlock" style="max-width: 200px">
+            <Button Color="ButtonColor.Secondary" @onclick="() => ModalDetailAutomateReport(automateReport.Id)">@localizer["Details"]</Button>
+            <Button @ref="deleteButton" Color="ButtonColor.Danger" @onclick="() => DeleteOneReport(automateReport.Id)">@localizer["Delete"]</Button>
         </div>
     </div>
 }
 
+<Modal @ref="modal" Size="ModalSize.Large" UseStaticBackdrop="true"></Modal>
+
 @code {
     #region Properties
     private List<AutomateReportReadViewModel> ListAutomateReportReadViewModels = new();
+    private Modal modal = default!;
+    private Button deleteButton = default!;
+
+    private DateTime StartDate;
+    private DateTime EndDate;
     #endregion
 
     #region Constructor
@@ -42,8 +67,10 @@
 
             if (firstRender)
             {
+                StartDate = DateTime.Now.AddDays(-7);
+                EndDate = DateTime.Now;
+
                 await LoadData();
-                StateHasChanged();
             }
         }
         catch (CustomDataLayerException ex)
@@ -80,7 +107,92 @@
     #region Private Methods
     private async Task LoadData()
     {
-        ListAutomateReportReadViewModels = (await _automateReportRepository.GetReportBetweenDate(DateTime.Now.AddDays(-7), DateTime.Now)).OrderByDescending(item => item.CreatedAt).ToList();
+        ListAutomateReportReadViewModels = (await _automateReportRepository.GetReportBetweenDate(StartDate, EndDate)).OrderByDescending(item => item.CreatedAt).ToList();
+        StateHasChanged();
+    }
+
+    private async Task ModalDetailAutomateReport(Guid reportId)
+    {
+        try
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("automateReport", await _automateReportRepository.GetOneReportById(reportId));
+
+            await modal.ShowAsync<MDetailsAutomateReport>(title: localizer["AutomateReport"], parameters: parameters);
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+    }
+
+    private async Task DeleteOneReport(Guid reportId)
+    {
+        try
+        {
+            deleteButton.ShowLoading($"{localizer["Saving"]}...");
+            await Task.Delay(1);
+
+            await _automateReportRepository.DeleteOneReportById(reportId);
+
+            await LoadData();
+
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Success"],
+                    Message = localizer["SuccessOfOperation"],
+                    IconName = IconName.Check2Circle,
+                    Type = ToastType.Success
+                });
+        }
+        catch (CustomDataLayerException ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Warning"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Warning
+                });
+
+            Log.Warning(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ToastService.Notify(new()
+                {
+                    Title = localizer["Error"],
+                    Message = ex.Message,
+                    IconName = IconName.ExclamationDiamondFill,
+                    Type = ToastType.Danger
+                });
+
+            Log.Error(ex, "An error occurred !");
+        }
+        finally
+        {
+            deleteButton.HideLoading();
+        }
     }
     #endregion
 }

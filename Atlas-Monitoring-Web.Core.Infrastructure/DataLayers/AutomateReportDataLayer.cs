@@ -25,22 +25,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
 
         #region Public Methods
         #region Create
-        public async Task CreateNewReport(AutomateReportWriteViewModel newReport)
-        {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
-            string path = $"{_appConfig.Value.URLApi}/AutomateReport";
 
-            HttpResponseMessage response = await client.PostAsJsonAsync(path, newReport);
-            if (response.StatusCode == HttpStatusCode.Created)
-            {
-                await response.Content.ReadFromJsonAsync<DeviceReadViewModel>(); ;
-            }
-            else
-            {
-                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
-            }
-        }
         #endregion
 
         #region Read
