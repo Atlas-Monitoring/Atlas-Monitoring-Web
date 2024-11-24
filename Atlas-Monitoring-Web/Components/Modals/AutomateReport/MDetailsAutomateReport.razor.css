@@ -1,0 +1,19 @@
+﻿.detailAutomateReportBlock{
+    border: 3px solid black;
+    border-bottom: 2px solid black;
+}
+
+.automateReportLine {
+    display: flex;
+    padding: 5px;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+
+.borderBottom3px {
+    border-bottom: 3px solid black !important;
+}
+
+.automateReportLineBlock {
+    flex: 1 1 auto;
+}

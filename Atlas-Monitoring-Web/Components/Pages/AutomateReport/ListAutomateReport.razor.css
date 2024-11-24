@@ -1,0 +1,26 @@
+﻿.automateReportLine{
+    display: flex;
+    padding: 5px;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+.automateReportLine_Success {
+    background-color: lightgreen;
+}
+
+.automateReportLine_Warning {
+    background-color: orange;
+}
+
+.automateReportLine_Error {
+    background-color: orangered;
+}
+
+.automateReportLineBlock{
+    flex: 1 1 auto;
+}
+
+.pagging5px{
+    padding: 5px;
+}

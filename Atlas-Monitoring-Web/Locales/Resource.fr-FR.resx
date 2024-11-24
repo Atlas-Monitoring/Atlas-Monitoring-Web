@@ -471,4 +471,34 @@
   <data name="Msg_Entity_Unassigned" xml:space="preserve">
     <value>Entité désassignée</value>
   </data>
+  <data name="ReportDate" xml:space="preserve">
+    <value>Date du rapport</value>
+  </data>
+  <data name="7DaysReports" xml:space="preserve">
+    <value>Rapports des 7 derniers jours</value>
+  </data>
+  <data name="GlobalMessage" xml:space="preserve">
+    <value>Message global</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Durée</value>
+  </data>
+  <data name="AutomateReport" xml:space="preserve">
+    <value>Rapport d'automate</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="SuccessOfOperation" xml:space="preserve">
+    <value>Succès de l'opération</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Date de début</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Date de fin</value>
+  </data>
 </root>

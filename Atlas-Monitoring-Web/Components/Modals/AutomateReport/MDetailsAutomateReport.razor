@@ -1,0 +1,48 @@
+﻿@using Atlas_Monitoring_Web.Core.Models.ViewModels
+
+
+<div class="detailAutomateReportBlock">
+    <div class="automateReportLine">
+        <div class="automateReportLineBlock">
+            @localizer["Software"] : @automateReport.AppName
+        </div>
+
+        <div class="automateReportLineBlock">
+            @localizer["Entity"] : @automateReport.EntityName
+        </div>
+
+        <div class="automateReportLineBlock">
+            @localizer["ReportDate"] : @automateReport.CreatedAt.ToString("dd-MM-yyyy")
+        </div>
+    </div>
+
+    <div class="automateReportLine">
+        <div class="automateReportLineBlock">
+            @localizer["Status"] : @automateReport.Status
+        </div>
+
+        <div class="automateReportLineBlock">
+            @localizer["Duration"] : @automateReport.DurationInSeconds @localizer["Second"]
+        </div>
+    </div>
+
+    <div class="automateReportLine borderBottom3px">
+        <div class="automateReportLineBlock">
+            @localizer["GlobalMessage"] : @automateReport.GlobalMessage
+        </div>
+    </div>
+
+    @foreach(AutomateLogReadViewModel logReadViewModel in automateReport.ListOfLogs)
+    {
+        <div class="automateReportLine">
+            <div class="automateReportLineBlock">
+                [@logReadViewModel.LogLevel] : @logReadViewModel.Comment
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    [Parameter] public AutomateReportReadViewModel automateReport { get; set; } = new();
+}

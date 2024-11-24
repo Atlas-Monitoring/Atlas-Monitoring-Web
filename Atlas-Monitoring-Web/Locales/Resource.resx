@@ -451,4 +451,34 @@
   <data name="Msg_Entity_Unassigned" xml:space="preserve">
     <value>Entity unassigned</value>
   </data>
+  <data name="ReportDate" xml:space="preserve">
+    <value>Report date</value>
+  </data>
+  <data name="7DaysReports" xml:space="preserve">
+    <value>Last 7 days reports</value>
+  </data>
+  <data name="GlobalMessage" xml:space="preserve">
+    <value>Global message</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="AutomateReport" xml:space="preserve">
+    <value>Automate report</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="SuccessOfOperation" xml:space="preserve">
+    <value>Success of operation !</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
 </root>

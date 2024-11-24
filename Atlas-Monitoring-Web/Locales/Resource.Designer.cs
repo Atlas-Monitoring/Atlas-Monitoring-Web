@@ -61,6 +61,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Last 7 days reports.
+        /// </summary>
+        public static string _7DaysReports {
+            get {
+                return ResourceManager.GetString("7DaysReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à About the Author.
         /// </summary>
         public static string AboutAuthor {
@@ -102,6 +111,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string AddNewDevice {
             get {
                 return ResourceManager.GetString("AddNewDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Automate report.
+        /// </summary>
+        public static string AutomateReport {
+            get {
+                return ResourceManager.GetString("AutomateReport", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -358,6 +385,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Duration.
+        /// </summary>
+        public static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à End date.
+        /// </summary>
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à End of life.
         /// </summary>
         public static string EndOfLife {
@@ -426,6 +471,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string GeneralInfo {
             get {
                 return ResourceManager.GetString("GeneralInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Global message.
+        /// </summary>
+        public static string GlobalMessage {
+            get {
+                return ResourceManager.GetString("GlobalMessage", resourceCulture);
             }
         }
         
@@ -916,6 +970,24 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Report date.
+        /// </summary>
+        public static string ReportDate {
+            get {
+                return ResourceManager.GetString("ReportDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Response.
         /// </summary>
         public static string Response {
@@ -1024,6 +1096,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Start date.
+        /// </summary>
+        public static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Status.
         /// </summary>
         public static string Status {
@@ -1038,6 +1119,15 @@ namespace Atlas_Monitoring_Web.Locales {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Success of operation !.
+        /// </summary>
+        public static string SuccessOfOperation {
+            get {
+                return ResourceManager.GetString("SuccessOfOperation", resourceCulture);
             }
         }
         
