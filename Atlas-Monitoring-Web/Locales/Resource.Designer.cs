@@ -934,6 +934,15 @@ namespace Atlas_Monitoring_Web.Locales {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this report ?.
+        /// </summary>
+        public static string QuestionDeleteReport {
+            get {
+                return ResourceManager.GetString("QuestionDeleteReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this device ?.
         /// </summary>
         public static string QuestionDeviceDeletion {

@@ -501,4 +501,7 @@
   <data name="EndDate" xml:space="preserve">
     <value>Date de fin</value>
   </data>
+  <data name="QuestionDeleteReport" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer ce rapport ?</value>
+  </data>
 </root>

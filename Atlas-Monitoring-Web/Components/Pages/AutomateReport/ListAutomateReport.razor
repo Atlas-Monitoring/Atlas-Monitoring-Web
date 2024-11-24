@@ -47,12 +47,15 @@
 }
 
 <Modal @ref="modal" Size="ModalSize.Large" UseStaticBackdrop="true"></Modal>
+<ConfirmDialog @ref="confirmDialog" />
 
 @code {
     #region Properties
     private List<AutomateReportReadViewModel> ListAutomateReportReadViewModels = new();
     private Modal modal = default!;
     private Button deleteButton = default!;
+
+    private ConfirmDialog confirmDialog = default!;
 
     private DateTime StartDate;
     private DateTime EndDate;
@@ -150,20 +153,36 @@
     {
         try
         {
-            deleteButton.ShowLoading($"{localizer["Saving"]}...");
-            await Task.Delay(1);
-
-            await _automateReportRepository.DeleteOneReportById(reportId);
-
-            await LoadData();
-
-            ToastService.Notify(new()
+            var options = new ConfirmDialogOptions
                 {
-                    Title = localizer["Success"],
-                    Message = localizer["SuccessOfOperation"],
-                    IconName = IconName.Check2Circle,
-                    Type = ToastType.Success
-                });
+                    YesButtonText = localizer["Confirm"],
+                    YesButtonColor = ButtonColor.Success,
+                    NoButtonText = localizer["Cancel"],
+                    NoButtonColor = ButtonColor.Danger
+                };
+
+            var confirmation = await confirmDialog.ShowAsync(
+            title: localizer["QuestionDeleteReport"],
+            message1: localizer["MsgThisActionCantBeRollback"],
+            confirmDialogOptions: options);
+
+            if (confirmation)
+            {
+                deleteButton.ShowLoading($"{localizer["Saving"]}...");
+                await Task.Delay(1);
+
+                await _automateReportRepository.DeleteOneReportById(reportId);
+
+                await LoadData();
+
+                ToastService.Notify(new()
+                    {
+                        Title = localizer["Success"],
+                        Message = localizer["SuccessOfOperation"],
+                        IconName = IconName.Check2Circle,
+                        Type = ToastType.Success
+                    });
+            }
         }
         catch (CustomDataLayerException ex)
         {
