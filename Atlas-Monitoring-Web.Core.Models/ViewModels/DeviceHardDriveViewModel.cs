@@ -1,6 +1,6 @@
 ﻿namespace Atlas_Monitoring_Web.Core.Models.ViewModels
 {
-    public class ComputerHardDriveViewModel
+    public class DeviceHardDriveViewModel
     {
         public Guid Id { get; set; }
         public Guid ComputerId { get; set; }

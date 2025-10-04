@@ -1,16 +1,11 @@
-﻿using Atlas_Monitoring_Web.Core.Models.ViewModels;
+﻿using Atlas_Monitoring_Web.Core.Models.Internal;
+using Atlas_Monitoring_Web.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
 {
     public interface IDeviceDataLayer
     {
         #region Create
-        /// <summary>
-        /// Create a new device
-        /// </summary>
-        /// <param name="newDevice">Object DeviceWriteViewModel</param>
-        /// <returns>Object DeviceReadViewModel</returns>
-        public Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice);
         #endregion
 
         #region Read
@@ -41,6 +36,20 @@ namespace Atlas_Monitoring_Web.Core.Interfaces.Infrastructure
         /// <param name="updatedDevice">Object DeviceWriteViewModel</param>
         /// <returns>Object DeviceReadViewModel</returns>
         public Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice);
+
+        /// <summary>
+        /// Update status of a device
+        /// </summary>
+        /// <param name="id">Id of device</param>
+        /// <param name="deviceStatus">Status of the device</param>
+        public Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus);
+
+        /// <summary>
+        /// Update entity of device
+        /// </summary>
+        /// <param name="deviceId">Id of device</param>
+        /// <param name="entityId">Id of entity</param>
+        public Task UpdateDeviceEntity(Guid deviceId, Guid entityId);
         #endregion
 
         #region Delete

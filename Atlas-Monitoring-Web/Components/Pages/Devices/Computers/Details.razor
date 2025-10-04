@@ -1,4 +1,4 @@
-﻿@page "/Computers/{idComuterString}"
+﻿@page "/Computers/{idComputerString}"
 @using Atlas_Monitoring_Web.Components.Partial
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.Internal
@@ -9,12 +9,8 @@
 @using Serilog
 @inject ToastService ToastService
 @inject PreloadService PreloadService
-@inject IComputerDataRepository _computerDataRepository
 @inject IComputerRepository _computerRepository
-@inject IComputerHardDriveRepository _computerHardDriveRepository
-@inject IComputerPartsRepository _computerPartsRepository
-@inject IDeviceSoftwareInstalledRepository _deviceSoftwareInstalledRepository
-@inject IDeviceHistoryRepository _deviceHistoryRepository
+@inject IDeviceRepository _deviceRepository
 @inject IEntityRepository _entityRepository
 
 <div class="d-grid justify-content-md-end" style="margin-bottom: 20px">
@@ -108,6 +104,12 @@
                             <th>@localizer["LastUpdate"]</th>
                             <td>@computerReadViewModel.DateUpdated.ToString("dd/MM/yyyy HH:mm:ss")</td>
                         </tr>
+                        <tr>
+                            <th>@localizer["Uptime"]</th>
+                            <td>
+                                @GetUptimeOfComputer()
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             }
@@ -118,11 +120,11 @@
             <Icon Name="IconName.App" /> @localizer["Software"]
         </TitleTemplate>
         <Content>
-            @if (computerSoftwareList != null)
+            @if (computerReadViewModel.SoftwareInstalled != null)
             {
                 <table class="table table-striped">
                     <tbody>
-                        @foreach (DeviceSoftwareInstalledReadViewModel software in computerSoftwareList.OrderBy(item => item.AppName))
+                        @foreach (DeviceSoftwareInstalledReadViewModel software in computerReadViewModel.SoftwareInstalled.OrderBy(item => item.AppName))
                         {
                             <tr>
                                 <td>@software.AppName</td>
@@ -140,11 +142,11 @@
             <Icon Name="IconName.PciCardNetwork" /> @localizer["Components"]
         </TitleTemplate>
         <Content>
-            @if (computerPartsViewModel != null)
+            @if (computerReadViewModel.ComputerParts != null)
             {
                 <table class="table table-striped">
                     <tbody>
-                        @foreach (DevicePartsReadViewModel parts in computerPartsViewModel.OrderBy(item => item.Name))
+                        @foreach (DevicePartsReadViewModel parts in computerReadViewModel.ComputerParts.OrderBy(item => item.Name))
                         {
                             <tr>
                                 <td>@parts.Name</td>
@@ -161,9 +163,9 @@
             <Icon Name="IconName.DeviceHddFill" /> @localizer["HardDrive"]
         </TitleTemplate>
         <Content>
-            @if (computerHardDrivesViewModel != null)
+            @if (computerReadViewModel.ComputerHardDrives != null)
             {
-                @foreach (ComputerHardDriveViewModel hardDrive in computerHardDrivesViewModel.OrderBy(item => item.Letter))
+                @foreach (DeviceHardDriveViewModel hardDrive in computerReadViewModel.ComputerHardDrives.OrderBy(item => item.Letter))
                 {
                     <Card Color="CardColor.None" Class="mb-4" Style="width:18rem;">
                         <CardHeader>@hardDrive.Letter : @(GetPourcentDiskFree(hardDrive.TotalSpace, hardDrive.SpaceUse)) % @localizer["Free"]</CardHeader>
@@ -181,7 +183,7 @@
                         </CardBody>
                     </Card>
                 }
-            }            
+            }
         </Content>
     </Tab>
     <Tab>
@@ -189,7 +191,7 @@
             <Icon Name="IconName.Activity" /> @localizer["Performances"]
         </TitleTemplate>
         <Content>
-            @if (computerDataViewModel != null && computerDataViewModel.Any())
+            @if (computerReadViewModel.ComputerLastData != null && computerReadViewModel.ComputerLastData.Any())
             {
                 <LineChartVisualisation lineChartDatasets="@lineChartDatasets" listOfLabelsX="listOfLabelsX" Title=@localizer["ComputerPerformance"] XLabel=@localizer["Date"] YLabel=@localizer["Percentage"] />
             }
@@ -204,11 +206,11 @@
             <Icon Name="IconName.Activity" /> @localizer["History"]
         </TitleTemplate>
         <Content>
-            @if (deviceHistoryViewModel != null && deviceHistoryViewModel.Any())
+            @if (computerReadViewModel.ComputerHistory != null && computerReadViewModel.ComputerHistory.Any())
             {
                 <table class="table table-stripped">
                     <tbody>
-                        @foreach (DeviceHistoryReadViewModel data in deviceHistoryViewModel.OrderByDescending(x => x.DateAdd))
+                        @foreach (DeviceHistoryReadViewModel data in computerReadViewModel.ComputerHistory.OrderByDescending(x => x.DateAdd))
                         {
                             <tr>
                                 <td>[@data.DateAdd]</td>
@@ -231,19 +233,15 @@
 @code {
     #region Properties
     [Parameter]
-    public string idComuterString { get; set; } = string.Empty;
-    private ComputerReadViewModel computerReadViewModel;
-    private List<ComputerHardDriveViewModel> computerHardDrivesViewModel;
-    private List<ComputerDataViewModel> computerDataViewModel;
-    private List<DeviceHistoryReadViewModel> deviceHistoryViewModel;
-    private List<DevicePartsReadViewModel> computerPartsViewModel;
-    private List<DeviceSoftwareInstalledReadViewModel> computerSoftwareList;
+    public string idComputerString { get; set; } = string.Empty;
+    private ComputerReadViewModel computerReadViewModel = new();
 
     private List<EntityReadViewModel> listOfEntities { get; set; } = new();
 
     private List<LineChartDataset> lineChartDatasets = new();
     private List<string> listOfLabelsX = new();
     private string versionOfReporter = string.Empty;
+    private string ComputerUptime = string.Empty;
 
     private ConfirmDialog confirmDialog = default!;
     #endregion
@@ -264,24 +262,24 @@
         catch (CustomDataLayerException ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Warning"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Warning
-                });
+            {
+                Title = localizer["Warning"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Warning
+            });
 
             Log.Warning(ex.Message);
         }
         catch (Exception ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Error"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Danger
-                });
+            {
+                Title = localizer["Error"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Danger
+            });
 
             Log.Error(ex, "An error occurred !");
         }
@@ -295,51 +293,45 @@
     #region Private Methods
     private async Task LoadData()
     {
-        computerReadViewModel = await _computerRepository.GetOneComputer(Guid.Parse(idComuterString));
-        computerHardDrivesViewModel = await _computerHardDriveRepository.GetHardDrivesOfAComputer(Guid.Parse(idComuterString));
-        computerDataViewModel = await _computerDataRepository.GetAllComputerDataOfAComputer(Guid.Parse(idComuterString), DateTime.Now.AddDays(-1));
-        computerPartsViewModel = await _computerPartsRepository.GetAllComputerPartByComputerId(Guid.Parse(idComuterString));
-        computerSoftwareList = await _deviceSoftwareInstalledRepository.ListOfSoftwareOnDevice(Guid.Parse(idComuterString));
-        deviceHistoryViewModel = await _deviceHistoryRepository.GetHistoryOfADevice(Guid.Parse(idComuterString));
+        computerReadViewModel = await _computerRepository.GetOneComputer(Guid.Parse(idComputerString));
         listOfEntities = await _entityRepository.GetListOfEntity();
 
-
-        if (computerDataViewModel.Any())
+        if (computerReadViewModel.ComputerLastData.Any())
         {
-            listOfLabelsX = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => item.DateAdd.ToString("yyyy-MM-ss HH:mm:ss")).ToList();
+            listOfLabelsX = computerReadViewModel.ComputerLastData.Take(computerReadViewModel.ComputerLastData.Count > 50 ? 50 : computerReadViewModel.ComputerLastData.Count).OrderByDescending(item => item.DateAdd).Select(item => item.DateAdd.ToString("yyyy-MM-ss HH:mm:ss")).ToList();
 
             //Set LineDataSet for CPU
             lineChartDatasets.Add(new()
             {
-                    Label = "CPU",
-                    Data = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(item.ProcessorUtilityPourcent, 2)).ToList(),
-                    BackgroundColor = "#43ACF5",
-                    BorderColor = "#43ACF5",
-                    BorderWidth = 2,
-                    HoverBorderWidth = 4,
-                    PointBackgroundColor = "#43ACF5",
-                    PointRadius = 0, // hide points
-                    PointHoverRadius = 4,
+                Label = "CPU",
+                Data = computerReadViewModel.ComputerLastData.Take(computerReadViewModel.ComputerLastData.Count > 50 ? 50 : computerReadViewModel.ComputerLastData.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(item.ProcessorUtilityPourcent, 2)).ToList(),
+                BackgroundColor = "#43ACF5",
+                BorderColor = "#43ACF5",
+                BorderWidth = 2,
+                HoverBorderWidth = 4,
+                PointBackgroundColor = "#43ACF5",
+                PointRadius = 0, // hide points
+                PointHoverRadius = 4,
             });
 
             //Set LineDataSet for Memory
             lineChartDatasets.Add(new()
             {
-                    Label = "RAM",
-                    Data = computerDataViewModel.Take(computerDataViewModel.Count > 50 ? 50 : computerDataViewModel.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(100 * (item.MemoryUsed / 1000000) / computerReadViewModel.MaxRam, 2)).ToList(),
-                    BackgroundColor = "#F9AF25",
-                    BorderColor = "#F9AF25",
-                    BorderWidth = 2,
-                    HoverBorderWidth = 4,
-                    PointBackgroundColor = "#F9AF25",
-                    PointRadius = 0, // hide points
-                    PointHoverRadius = 4,
+                Label = "RAM",
+                Data = computerReadViewModel.ComputerLastData.Take(computerReadViewModel.ComputerLastData.Count > 50 ? 50 : computerReadViewModel.ComputerLastData.Count).OrderByDescending(item => item.DateAdd).Select(item => Math.Round(100 * (item.MemoryUsed / 1000000) / computerReadViewModel.MaxRam, 2)).ToList(),
+                BackgroundColor = "#F9AF25",
+                BorderColor = "#F9AF25",
+                BorderWidth = 2,
+                HoverBorderWidth = 4,
+                PointBackgroundColor = "#F9AF25",
+                PointRadius = 0, // hide points
+                PointHoverRadius = 4,
             });
         }
 
-        if (computerSoftwareList.Any() && computerSoftwareList.Where(item => item.AppName == "Atlas Monitoring Reporter").Any())
+        if (computerReadViewModel.SoftwareInstalled.Any() && computerReadViewModel.SoftwareInstalled.Where(item => item.AppName == "Atlas Monitoring Reporter").Any())
         {
-            versionOfReporter = computerSoftwareList.Where(item => item.AppName == "Atlas Monitoring Reporter").First().Version;
+            versionOfReporter = computerReadViewModel.SoftwareInstalled.Where(item => item.AppName == "Atlas Monitoring Reporter").First().Version;
         }
     }
 
@@ -351,12 +343,12 @@
     private async Task DeleteComputer()
     {
         var options = new ConfirmDialogOptions
-            {
-                YesButtonText = localizer["Confirm"],
-                YesButtonColor = ButtonColor.Success,
-                NoButtonText = localizer["Cancel"],
-                NoButtonColor = ButtonColor.Danger
-            };
+        {
+            YesButtonText = localizer["Confirm"],
+            YesButtonColor = ButtonColor.Success,
+            NoButtonText = localizer["Cancel"],
+            NoButtonColor = ButtonColor.Danger
+        };
 
         var confirmation = await confirmDialog.ShowAsync(
             title: localizer["DeletetionMessageDevice"],
@@ -365,7 +357,7 @@
 
         if (confirmation)
         {
-            await _computerRepository.DeleteComputer(Guid.Parse(idComuterString));
+            await _deviceRepository.DeleteDevice(Guid.Parse(idComputerString));
             NavigationManager.NavigateTo("/Computers", true);
         }
     }
@@ -374,37 +366,37 @@
     {
         try
         {
-            await _computerRepository.UpdateComputerStatus(computerId, (DeviceStatus)Enum.Parse(typeof(DeviceStatus), deviceStatus));
+            await _deviceRepository.UpdateDeviceStatus(computerId, (DeviceStatus)Enum.Parse(typeof(DeviceStatus), deviceStatus));
 
             ToastService.Notify(new()
-                {
-                    Title = localizer["Success"],
-                    Message = localizer["Msg_Device_Status_Updated"],
-                    IconName = IconName.Check2Circle,
-                    Type = ToastType.Success
-                });
+            {
+                Title = localizer["Success"],
+                Message = localizer["Msg_Device_Status_Updated"],
+                IconName = IconName.Check2Circle,
+                Type = ToastType.Success
+            });
         }
         catch (CustomDataLayerException ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Warning"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Warning
-                });
+            {
+                Title = localizer["Warning"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Warning
+            });
 
             Log.Warning(ex.Message);
         }
         catch (Exception ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Error"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Danger
-                });
+            {
+                Title = localizer["Error"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Danger
+            });
 
             Log.Error(ex, "An error occurred !");
         }
@@ -416,52 +408,88 @@
         {
             if (entityId != string.Empty)
             {
-                await _computerRepository.UpdateComputerEntity(computerId, Guid.Parse(entityId));
+                await _deviceRepository.UpdateDeviceEntity(computerId, Guid.Parse(entityId));
 
                 ToastService.Notify(new()
-                    {
-                        Title = localizer["Success"],
-                        Message = localizer["Msg_Entity_Assigned"],
-                        IconName = IconName.Check2Circle,
-                        Type = ToastType.Success
-                    });
+                {
+                    Title = localizer["Success"],
+                    Message = localizer["Msg_Entity_Assigned"],
+                    IconName = IconName.Check2Circle,
+                    Type = ToastType.Success
+                });
             }
             else
             {
-                await _computerRepository.UpdateComputerEntity(computerId, Guid.Empty);
+                await _deviceRepository.UpdateDeviceEntity(computerId, Guid.Empty);
 
                 ToastService.Notify(new()
-                    {
-                        Title = localizer["Success"],
-                        Message = localizer["Msg_Entity_Unassigned"],
-                        IconName = IconName.Check2Circle,
-                        Type = ToastType.Success
-                    });
+                {
+                    Title = localizer["Success"],
+                    Message = localizer["Msg_Entity_Unassigned"],
+                    IconName = IconName.Check2Circle,
+                    Type = ToastType.Success
+                });
             }
         }
         catch (CustomDataLayerException ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Warning"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Warning
-                });
+            {
+                Title = localizer["Warning"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Warning
+            });
 
             Log.Warning(ex.Message);
         }
         catch (Exception ex)
         {
             ToastService.Notify(new()
-                {
-                    Title = localizer["Error"],
-                    Message = ex.Message,
-                    IconName = IconName.ExclamationDiamondFill,
-                    Type = ToastType.Danger
-                });
+            {
+                Title = localizer["Error"],
+                Message = ex.Message,
+                IconName = IconName.ExclamationDiamondFill,
+                Type = ToastType.Danger
+            });
 
             Log.Error(ex, "An error occurred !");
+        }
+    }
+
+    private string GetUptimeOfComputer()
+    {
+        double uptimeInSeconds = 0;
+        if (computerReadViewModel.ComputerLastData.Any())
+        {
+            uptimeInSeconds = computerReadViewModel.ComputerLastData.OrderByDescending(x => x.DateAdd).FirstOrDefault().UptimeSinceInSecond;
+        }
+        else
+        {
+            return string.Empty;
+        }
+
+        TimeSpan diffOfDates = TimeSpan.FromSeconds(uptimeInSeconds);
+
+        if (diffOfDates.Days > 0)
+        {
+            return $"{diffOfDates.Days} {localizer["Day"]} {diffOfDates.Hours} {localizer["Hour"]} {diffOfDates.Minutes} {localizer["Minute"]}";
+        }
+        else if (diffOfDates.Hours > 0)
+        {
+            return $"{diffOfDates.Hours} {localizer["Hour"]} {diffOfDates.Minutes} {localizer["Minute"]}";
+        }
+        else if (diffOfDates.Minutes > 0)
+        {
+            return $"{diffOfDates.Minutes} {localizer["Minute"]}";
+        }
+        else if (diffOfDates.Seconds > 0)
+        {
+            return $"{diffOfDates.Seconds} {localizer["Second"]}";
+        }
+        else
+        {
+            return string.Empty;
         }
     }
     #endregion
