@@ -1,5 +1,6 @@
 ﻿using Atlas_Monitoring_Web.Core.Interfaces.Application;
 using Atlas_Monitoring_Web.Core.Interfaces.Infrastructure;
+using Atlas_Monitoring_Web.Core.Models.Internal;
 using Atlas_Monitoring_Web.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring_Web.Core.Application.Repositories
@@ -19,10 +20,6 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
 
         #region Publics Methods
         #region Create
-        public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
-        {
-            return await _deviceDataLayer.CreateNewDevice(newDevice);
-        }
         #endregion
 
         #region Read
@@ -46,6 +43,16 @@ namespace Atlas_Monitoring_Web.Core.Application.Repositories
         public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
         {
             return await _deviceDataLayer.UpdateDevice(updatedDevice);
+        }
+
+        public async Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            await _deviceDataLayer.UpdateDeviceStatus(id, deviceStatus);
+        }
+
+        public async Task UpdateDeviceEntity(Guid deviceId, Guid entityId)
+        {
+            await _deviceDataLayer.UpdateDeviceEntity(deviceId, entityId);
         }
         #endregion
 

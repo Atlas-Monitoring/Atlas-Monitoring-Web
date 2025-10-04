@@ -134,6 +134,40 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
                 throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
             }
         }
+
+        public async Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
+            string path = $"{_appConfig.Value.URLApi}/Device/{id.ToString()}/{deviceStatus}";
+
+            HttpResponseMessage response = await client.PutAsync(path, null);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No device found with id '{id.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
+
+        public async Task UpdateDeviceEntity(Guid deviceId, Guid entityId)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization;
+            string path = $"{_appConfig.Value.URLApi}/Device/AssignEntity/{deviceId.ToString()}/{entityId.ToString()}";
+
+            HttpResponseMessage response = await client.PutAsync(path, null);
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                throw new CustomDataLayerException($"No computer found with id '{deviceId.ToString()}'");
+            }
+            else if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+            }
+        }
         #endregion
 
         #region Delete

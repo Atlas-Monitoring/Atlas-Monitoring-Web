@@ -25,27 +25,9 @@ namespace Atlas_Monitoring_Web.Core.Interfaces.Application
         #endregion
 
         #region Update
-        /// <summary>
-        /// Update status of computer
-        /// </summary>
-        /// <param name="id">Id of computer</param>
-        /// <param name="deviceStatus">Status of the device</param>
-        public Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus);
-
-        /// <summary>
-        /// Update entity of computer
-        /// </summary>
-        /// <param name="computerId">Id of computer</param>
-        /// <param name="entityId">Id of entity</param>
-        public Task UpdateComputerEntity(Guid computerId, Guid entityId);
         #endregion
 
         #region Delete
-        /// <summary>
-        /// Delete computer
-        /// </summary>
-        /// <param name="idComputer">Id of computer</param>
-        Task DeleteComputer(Guid idComputer);
         #endregion
     }
 }
