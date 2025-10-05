@@ -1,10 +1,13 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using Atlas_Monitoring_Web.Core.Interfaces.Application
+@using Atlas_Monitoring_Web.Core.Models.ViewModels
+@using Microsoft.Extensions.Localization
 @using Atlas_Monitoring_Web.Locales
+@inject IEntityRepository _entityRepository
 
 <Sidebar2 Href="/"
           IconName="IconName.Activity"
           Title="Atlas"
-          BadgeText="v1.0.1"
+          BadgeText="v1.1.0"
           DataProvider="Sidebar2DataProvider" />
 
 @code {
@@ -12,20 +15,23 @@
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
-        if (navItems is null)
-            navItems = GetNavItems();
+        //Get names of all entity
+        List<EntityReadViewModel> ListOfEntities = await _entityRepository.GetListOfEntity(); 
+
+        if (navItems is null) { navItems = GetNavItems(ListOfEntities); }
 
         return await Task.FromResult(request.ApplyTo(navItems));
     }
 
-    private IEnumerable<NavItem> GetNavItems()
+    private IEnumerable<NavItem> GetNavItems(List<EntityReadViewModel> listOfEntities)
     {
         navItems = new List<NavItem>
         {
             new NavItem { Id = "1", Href = "/", IconName = IconName.HouseDoorFill, Text = localizer["Home"]},
 
             new NavItem { Id = "20", Text = localizer["Devices"] },
-            new NavItem { Id = "22", Href = "/Computers", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="20"},
+            new NavItem { Id = "22", IconName = IconName.Pc, Text = localizer["Computers"], ParentId="20"},
+            new NavItem { Id = "22-0", Href = "/Computers", IconName = IconName.Pc, Text = localizer["All"], ParentId="22"},
             // new NavItem { Id = "23", Href = "/Servers", IconName = IconName.Pc, Text = localizer["Server"], ParentId="20"},
             new NavItem { Id = "24", Href = "/Others", IconName = IconName.ThreeDots, Text = localizer["Others"], ParentId="20"},
 
@@ -37,6 +43,11 @@
 
             new NavItem { Id = "50", Href = "/AutomateReport", IconName = IconName.Clock, Text = localizer["AutomateReport"]},
         };
+
+        foreach (EntityReadViewModel entity in listOfEntities)
+        {
+            navItems = navItems.Append(new NavItem { Id = $"22-{entity.EntityId}", Href = $"/Computers/Entity/{entity.EntityId}", IconName = IconName.Pc, Text = entity.Name, ParentId = "22" });
+        }
 
         return navItems;
     }

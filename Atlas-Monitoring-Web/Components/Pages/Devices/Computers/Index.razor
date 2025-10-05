@@ -1,4 +1,5 @@
 ﻿@page "/Computers"
+@page "/Computers/Entity/{entityId}"
 @using Atlas_Monitoring_Web.Components.Modals.Devices
 @using Atlas_Monitoring_Web.Core.Interfaces.Application
 @using Atlas_Monitoring_Web.Core.Models.Internal
@@ -62,6 +63,10 @@
 
 @code {
     #region Properties
+    [Parameter]
+    public string? entityId { get; set; }
+    private string? savedEntityId { get; set; }
+
     private List<ComputerReadViewModel> listComputers { get; set; } = new();
     private Grid<ComputerReadViewModel> grid = default!;
     private Modal modal = default!;
@@ -74,8 +79,10 @@
         {
             PreloadService.Show();
 
-            if (firstRender)
+            if (firstRender || savedEntityId != entityId)
             {
+                savedEntityId = entityId;
+
                 await LoadData();
                 await grid.RefreshDataAsync();
             }
@@ -115,6 +122,11 @@
     private async Task LoadData()
     {
         listComputers = await _computerRepository.GetAllComputers();
+
+        if (entityId is not null)
+        {
+            listComputers = listComputers.Where(item => item.EntityId == Guid.Parse(entityId)).ToList();
+        }
     }
 
     private async Task<GridDataProviderResult<ComputerReadViewModel>> ComputersDataProvider(GridDataProviderRequest<ComputerReadViewModel> request)

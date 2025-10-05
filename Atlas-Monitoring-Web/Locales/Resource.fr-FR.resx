@@ -504,4 +504,7 @@
   <data name="QuestionDeleteReport" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir supprimer ce rapport ?</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Tous</value>
+  </data>
 </root>
