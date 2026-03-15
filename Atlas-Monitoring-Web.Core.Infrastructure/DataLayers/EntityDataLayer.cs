@@ -82,7 +82,7 @@ namespace Atlas_Monitoring_Web.Core.Infrastructure.DataLayers
             HttpResponseMessage response = await client.DeleteAsync(path);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw new CustomDataLayerException($"Response error (Status {response.StatusCode})");
+                throw new CustomDataLayerException($"Response error (Status {response.StatusCode}) : {await response.Content.ReadAsStringAsync()}");
             }
         }
         #endregion
